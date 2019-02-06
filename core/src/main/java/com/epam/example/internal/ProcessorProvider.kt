@@ -1,0 +1,18 @@
+package com.epam.example.internal
+
+interface ProcessorProvider {
+
+    /**
+     * Provide the data from RxCache
+     *
+     * @param <T> the associated data
+     * @return an observable based on the [ConfigProvider] specs.
+    </T> */
+    suspend fun <T> process(cacheObjectParams: CacheObjectParams?): T?
+
+    /**
+     * Destroy the entire cache
+     */
+    suspend fun deleteAll()
+
+}
