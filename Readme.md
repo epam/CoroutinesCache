@@ -13,6 +13,37 @@ Inspired by Retrofit api, CoroutinesCache is a reactive caching library for Andr
 
 Coroutines Cache works only on `kotlin-coroutines:0.26.1` and above.
 
+## Getting started
+
+Library is located in jcenter, add jcenter repository in main gradle file
+
+```kotlin
+allprojects {
+  repositories {
+    ...
+    jcenter()
+  }
+}
+```
+
+Grab via Gradle:
+
+```kotlin
+  implementation 'com.epam.coroutinecache:coroutinecache:0.9.0'
+```
+or Maven:
+
+```kotlin
+  <dependency>
+    <groupId>com.epam.coroutinecache</groupId>
+    <artifactId>coroutinecache</artifactId>
+    <version>0.9.0</version>
+    <type>pom</type>
+  </dependency>
+```
+
+
+
 ## Usage
 
 To start use cache you need to create CoroutinesCache object: 
