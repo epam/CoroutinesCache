@@ -49,7 +49,7 @@ or Maven:
 To start use cache you need to create CoroutinesCache object: 
 
 ```kotlin
-val coroutines Cache = CoroutinesCache(cacheParams: CacheParams, scope: CoroutineScope)
+val coroutines: Cache = CoroutinesCache(cacheParams: CacheParams, scope: CoroutineScope)
 ```
 
 Last param `CacheParam` is defining cache location, json mapper and persistence size in Mb.
