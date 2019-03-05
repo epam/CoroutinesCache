@@ -1,4 +1,4 @@
-package com.epam.example.utils
+package com.epam.coroutinecache.utils
 
 import java.lang.reflect.*
 

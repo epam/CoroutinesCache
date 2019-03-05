@@ -1,6 +1,6 @@
-package com.epam.example.core
+package com.epam.coroutinecache.core
 
-import com.epam.example.utils.CacheLog
+import com.epam.coroutinecache.utils.CacheLog
 
 class MemoryCache : Memory {
 

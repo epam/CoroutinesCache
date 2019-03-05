@@ -1,8 +1,8 @@
-package com.epam.example.core.actions
+package com.epam.coroutinecache.core.actions
 
-import com.epam.example.core.Memory
-import com.epam.example.core.Persistence
-import com.epam.example.core.Record
+import com.epam.coroutinecache.core.Memory
+import com.epam.coroutinecache.core.Persistence
+import com.epam.coroutinecache.core.Record
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import org.koin.core.parameter.parametersOf

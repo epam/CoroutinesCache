@@ -1,8 +1,8 @@
-package com.epam.example.actions
+package com.epam.coroutinecache.actions
 
-import com.epam.example.BaseTest
-import com.epam.example.core.Record
-import com.epam.example.core.actions.DeleteRecordAction
+import com.epam.coroutinecache.BaseTest
+import com.epam.coroutinecache.core.Record
+import com.epam.coroutinecache.core.actions.DeleteRecordAction
 import junit.framework.Assert.assertTrue
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.runBlocking

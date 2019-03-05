@@ -1,9 +1,9 @@
-package com.epam.example.utils
+package com.epam.coroutinecache.utils
 
-import com.epam.example.mappers.GsonMapper
-import com.epam.example.mappers.JacksonMapper
-import com.epam.example.mappers.JsonMapper
-import com.epam.example.mappers.MoshiMapper
+import com.epam.coroutinecache.mappers.GsonMapper
+import com.epam.coroutinecache.mappers.JacksonMapper
+import com.epam.coroutinecache.mappers.JsonMapper
+import com.epam.coroutinecache.mappers.MoshiMapper
 
 class MapperProvider {
 

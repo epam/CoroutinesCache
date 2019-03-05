@@ -1,4 +1,4 @@
-package com.epam.example.annotations
+package com.epam.coroutinecache.annotations
 
 /**
  * If this annotation is applying to function, user will get data from cache even lifetime is exceeded

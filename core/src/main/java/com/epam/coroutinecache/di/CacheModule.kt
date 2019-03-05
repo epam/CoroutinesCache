@@ -1,15 +1,12 @@
-package com.epam.example.di
+package com.epam.coroutinecache.di
 
-import com.epam.example.api.CacheParams
-import com.epam.example.core.DiskCache
-import com.epam.example.core.Memory
-import com.epam.example.core.MemoryCache
-import com.epam.example.core.Persistence
-import com.epam.example.internal.ProcessorProvider
-import com.epam.example.internal.ProcessorProviderImpl
-import com.epam.example.internal.ProxyTranslator
-import com.epam.example.internal.RecordExpiredChecker
-import com.epam.example.mappers.JsonMapper
+import com.epam.coroutinecache.core.DiskCache
+import com.epam.coroutinecache.core.Memory
+import com.epam.coroutinecache.core.MemoryCache
+import com.epam.coroutinecache.core.Persistence
+import com.epam.coroutinecache.internal.ProxyTranslator
+import com.epam.coroutinecache.internal.RecordExpiredChecker
+import com.epam.coroutinecache.mappers.JsonMapper
 import org.koin.dsl.module.module
 import java.io.File
 

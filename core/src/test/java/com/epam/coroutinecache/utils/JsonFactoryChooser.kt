@@ -1,4 +1,4 @@
-package com.epam.example.utils
+package com.epam.coroutinecache.utils
 
 enum class JsonFactoryChooser(number: Int) {
     MOSHI(0),

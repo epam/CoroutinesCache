@@ -1,6 +1,6 @@
-package com.epam.example.mappers
+package com.epam.coroutinecache.mappers
 
-import com.epam.example.utils.Types
+import com.epam.coroutinecache.utils.Types
 import com.google.gson.Gson
 import java.io.BufferedReader
 import java.io.File

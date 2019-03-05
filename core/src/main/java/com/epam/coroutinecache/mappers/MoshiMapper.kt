@@ -1,4 +1,4 @@
-package com.epam.example.mappers
+package com.epam.coroutinecache.mappers
 
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.Moshi

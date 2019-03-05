@@ -1,8 +1,8 @@
-package com.epam.example.api
+package com.epam.coroutinecache.api
 
-import com.epam.example.di.actionsModule
-import com.epam.example.di.cacheModule
-import com.epam.example.internal.ProxyProvider
+import com.epam.coroutinecache.di.actionsModule
+import com.epam.coroutinecache.di.cacheModule
+import com.epam.coroutinecache.internal.ProxyProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import org.koin.standalone.StandAloneContext.loadKoinModules

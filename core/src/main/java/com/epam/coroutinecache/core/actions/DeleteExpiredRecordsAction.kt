@@ -1,9 +1,9 @@
-package com.epam.example.core.actions
+package com.epam.coroutinecache.core.actions
 
-import com.epam.example.core.Memory
-import com.epam.example.core.Persistence
-import com.epam.example.core.Record
-import com.epam.example.internal.RecordExpiredChecker
+import com.epam.coroutinecache.core.Memory
+import com.epam.coroutinecache.core.Persistence
+import com.epam.coroutinecache.core.Record
+import com.epam.coroutinecache.internal.RecordExpiredChecker
 
 /**
  * Class that used to delete all expired records.

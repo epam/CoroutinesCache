@@ -1,7 +1,7 @@
-package com.epam.example
+package com.epam.coroutinecache
 
-import com.epam.example.core.Record
-import com.epam.example.utils.MockDataString
+import com.epam.coroutinecache.core.Record
+import com.epam.coroutinecache.utils.MockDataString
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
 import org.junit.Test

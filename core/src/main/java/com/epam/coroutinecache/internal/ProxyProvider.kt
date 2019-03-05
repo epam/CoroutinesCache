@@ -1,7 +1,7 @@
-package com.epam.example.internal
+package com.epam.coroutinecache.internal
 
-import com.epam.example.api.CacheParams
-import com.epam.example.core.Persistence
+import com.epam.coroutinecache.api.CacheParams
+import com.epam.coroutinecache.core.Persistence
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import org.koin.core.parameter.parametersOf

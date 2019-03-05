@@ -1,4 +1,4 @@
-package com.epam.example.utils
+package com.epam.coroutinecache.utils
 
 object CacheLog {
 

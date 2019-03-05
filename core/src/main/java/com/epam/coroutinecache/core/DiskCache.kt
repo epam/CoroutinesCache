@@ -1,6 +1,6 @@
-package com.epam.example.core
+package com.epam.coroutinecache.core
 
-import com.epam.example.mappers.JsonMapper
+import com.epam.coroutinecache.mappers.JsonMapper
 import java.io.File
 import java.io.FileWriter
 import java.lang.Exception

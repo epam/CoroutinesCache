@@ -1,4 +1,4 @@
-package com.epam.example.core
+package com.epam.coroutinecache.core
 
 /**
  * Enum that shows where data came from

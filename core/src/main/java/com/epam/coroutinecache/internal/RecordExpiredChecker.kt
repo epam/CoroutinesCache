@@ -1,6 +1,6 @@
-package com.epam.example.internal
+package com.epam.coroutinecache.internal
 
-import com.epam.example.core.Record
+import com.epam.coroutinecache.core.Record
 
 /**
  * Helper class that checks is record expired

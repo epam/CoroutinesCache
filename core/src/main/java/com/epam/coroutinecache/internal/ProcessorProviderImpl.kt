@@ -1,11 +1,11 @@
-package com.epam.example.internal
+package com.epam.coroutinecache.internal
 
-import com.epam.example.api.CacheParams
-import com.epam.example.core.Source
-import com.epam.example.core.actions.DeleteRecordAction
-import com.epam.example.core.actions.GetRecordAction
-import com.epam.example.core.actions.SaveRecordAction
-import com.epam.example.utils.CacheLog
+import com.epam.coroutinecache.api.CacheParams
+import com.epam.coroutinecache.core.Source
+import com.epam.coroutinecache.core.actions.DeleteRecordAction
+import com.epam.coroutinecache.core.actions.GetRecordAction
+import com.epam.coroutinecache.core.actions.SaveRecordAction
+import com.epam.coroutinecache.utils.CacheLog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import org.koin.core.parameter.parametersOf

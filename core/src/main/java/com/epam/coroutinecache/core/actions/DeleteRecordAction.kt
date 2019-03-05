@@ -1,7 +1,7 @@
-package com.epam.example.core.actions
+package com.epam.coroutinecache.core.actions
 
-import com.epam.example.core.Memory
-import com.epam.example.core.Persistence
+import com.epam.coroutinecache.core.Memory
+import com.epam.coroutinecache.core.Persistence
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 

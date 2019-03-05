@@ -1,16 +1,10 @@
-package com.epam.example
+package com.epam.coroutinecache
 
-import com.epam.example.core.Persistence
-import com.epam.example.core.Record
-import com.epam.example.utils.JsonFactoryChooser
-import com.epam.example.utils.MapperProvider
-import com.epam.example.utils.MockDataString
+import com.epam.coroutinecache.core.Record
+import com.epam.coroutinecache.utils.MockDataString
 import org.junit.*
 
 import org.junit.Assert.*
-import org.junit.rules.TemporaryFolder
-import org.koin.core.parameter.parametersOf
-import org.koin.standalone.inject
 
 class DiskTest: BaseTest() {
 

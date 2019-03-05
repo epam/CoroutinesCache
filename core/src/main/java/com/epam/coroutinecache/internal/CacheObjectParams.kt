@@ -1,4 +1,4 @@
-package com.epam.example.internal
+package com.epam.coroutinecache.internal
 
 import kotlinx.coroutines.Deferred
 import java.util.concurrent.TimeUnit

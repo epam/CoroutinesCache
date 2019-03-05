@@ -1,21 +1,19 @@
-package com.epam.example.actions
+package com.epam.coroutinecache.actions
 
-import com.epam.example.BaseTest
-import com.epam.example.core.Record
-import com.epam.example.core.Source
-import com.epam.example.core.actions.GetRecordAction
-import com.epam.example.core.actions.SaveRecordAction
-import com.epam.example.utils.MockDataString
+import com.epam.coroutinecache.BaseTest
+import com.epam.coroutinecache.core.Record
+import com.epam.coroutinecache.core.Source
+import com.epam.coroutinecache.core.actions.GetRecordAction
+import com.epam.coroutinecache.core.actions.SaveRecordAction
+import com.epam.coroutinecache.utils.MockDataString
 import junit.framework.Assert.assertTrue
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.koin.core.parameter.parametersOf
 import org.koin.standalone.inject
-import java.util.*
 
 class GetRecordActionTest : BaseTest() {
 

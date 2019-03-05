@@ -1,4 +1,4 @@
-package com.epam.example.annotations
+package com.epam.coroutinecache.annotations
 
 /**
  * Annotation that describes key, which will be used to store function result

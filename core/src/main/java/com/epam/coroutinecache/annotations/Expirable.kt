@@ -1,4 +1,4 @@
-package com.epam.example.annotations
+package com.epam.coroutinecache.annotations
 
 /**
  * Annotation class using to set caching function expirable value to true. 

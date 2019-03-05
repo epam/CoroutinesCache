@@ -1,6 +1,6 @@
-package com.epam.example.core
+package com.epam.coroutinecache.core
 
-import com.epam.example.utils.getClassName
+import com.epam.coroutinecache.utils.getClassName
 
 /**
  * Class that will be stored in the cache. Contains data and all information about record in the cache

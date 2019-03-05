@@ -1,4 +1,4 @@
-package com.epam.example.mappers
+package com.epam.coroutinecache.mappers
 
 import java.io.File
 import java.lang.reflect.ParameterizedType

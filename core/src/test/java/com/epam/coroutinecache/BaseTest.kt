@@ -1,11 +1,11 @@
-package com.epam.example
+package com.epam.coroutinecache
 
-import com.epam.example.core.Memory
-import com.epam.example.core.Persistence
-import com.epam.example.di.actionsModule
-import com.epam.example.di.cacheModule
-import com.epam.example.utils.JsonFactoryChooser
-import com.epam.example.utils.MapperProvider
+import com.epam.coroutinecache.core.Memory
+import com.epam.coroutinecache.core.Persistence
+import com.epam.coroutinecache.di.actionsModule
+import com.epam.coroutinecache.di.cacheModule
+import com.epam.coroutinecache.utils.JsonFactoryChooser
+import com.epam.coroutinecache.utils.MapperProvider
 import org.junit.*
 import org.junit.rules.TemporaryFolder
 import org.koin.core.parameter.parametersOf
@@ -13,8 +13,6 @@ import org.koin.standalone.StandAloneContext.startKoin
 import org.koin.standalone.StandAloneContext.stopKoin
 import org.koin.standalone.get
 import org.koin.test.KoinTest
-import org.koin.test.checkModules
-import org.koin.test.dryRun
 
 open class BaseTest : KoinTest {
 

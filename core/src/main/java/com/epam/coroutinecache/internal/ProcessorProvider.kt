@@ -1,4 +1,4 @@
-package com.epam.example.internal
+package com.epam.coroutinecache.internal
 
 interface ProcessorProvider {
 

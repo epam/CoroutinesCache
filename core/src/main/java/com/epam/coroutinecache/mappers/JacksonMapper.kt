@@ -1,6 +1,6 @@
-package com.epam.example.mappers
+package com.epam.coroutinecache.mappers
 
-import com.epam.example.utils.Types
+import com.epam.coroutinecache.utils.Types
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper

@@ -1,6 +1,6 @@
-package com.epam.example.api
+package com.epam.coroutinecache.api
 
-import com.epam.example.mappers.JsonMapper
+import com.epam.coroutinecache.mappers.JsonMapper
 import java.io.File
 import java.lang.IllegalArgumentException
 

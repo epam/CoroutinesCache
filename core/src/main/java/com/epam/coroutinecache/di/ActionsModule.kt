@@ -1,6 +1,6 @@
-package com.epam.example.di
+package com.epam.coroutinecache.di
 
-import com.epam.example.core.actions.*
+import com.epam.coroutinecache.core.actions.*
 import kotlinx.coroutines.CoroutineScope
 import org.koin.dsl.module.module
 

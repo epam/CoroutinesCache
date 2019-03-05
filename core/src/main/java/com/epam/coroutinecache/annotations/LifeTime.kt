@@ -1,4 +1,4 @@
-package com.epam.example.annotations
+package com.epam.coroutinecache.annotations
 
 import java.util.concurrent.TimeUnit
 
