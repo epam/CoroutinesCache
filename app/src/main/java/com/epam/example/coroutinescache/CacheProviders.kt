@@ -1,9 +1,9 @@
 package com.epam.example.coroutinescache
 
-import com.epam.example.annotations.Expirable
-import com.epam.example.annotations.LifeTime
-import com.epam.example.annotations.ProviderKey
-import com.epam.example.annotations.UseIfExpired
+import com.epam.coroutinecache.annotations.Expirable
+import com.epam.coroutinecache.annotations.LifeTime
+import com.epam.coroutinecache.annotations.ProviderKey
+import com.epam.coroutinecache.annotations.UseIfExpired
 import kotlinx.coroutines.Deferred
 import java.util.concurrent.TimeUnit
 

@@ -1,8 +1,8 @@
 package com.epam.example.coroutinescache
 
-import com.epam.example.api.CacheParams
-import com.epam.example.api.CoroutinesCache
-import com.epam.example.mappers.GsonMapper
+import com.epam.coroutinecache.api.CacheParams
+import com.epam.coroutinecache.api.CoroutinesCache
+import com.epam.coroutinecache.mappers.GsonMapper
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
 import retrofit2.Retrofit
