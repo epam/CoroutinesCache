@@ -1,43 +1,37 @@
 package com.epam.coroutinecache.core
 
 import com.epam.coroutinecache.utils.CacheLog
+import java.util.concurrent.ConcurrentHashMap
 
 class MemoryCache : Memory {
 
-    private val recordsMap: MutableMap<in String, Record<*>> = mutableMapOf()
+    private val recordsMap: MutableMap<in String, Record<*>> = ConcurrentHashMap()
 
     override fun <T> getRecord(key: String): Record<T>? {
-        synchronized(recordsMap) {
-            try {
-                return if (recordsMap[key] == null) {
-                    null
-                } else {
-                    recordsMap[key] as Record<T>
-                }
-            } catch (e: Exception) {
-                CacheLog.logError("Cannot get record from memory", e)
-                return null
+        return try {
+            if (recordsMap[key] == null) {
+                null
+            } else {
+                recordsMap[key] as Record<T>
             }
+        } catch (e: Exception) {
+            CacheLog.logError("Cannot get record from memory", e)
+            null
         }
     }
 
     override fun <T> saveRecord(key: String, record: Record<T>) {
-        synchronized(recordsMap) {
-            recordsMap.put(key, record)
-        }
+        recordsMap[key] = record
     }
 
     override fun keySet(): Set<String> = recordsMap.keys as Set<String>
 
     override fun deleteByKey(key: String) {
-        synchronized(recordsMap) {
-            recordsMap.remove(key)
-        }
+        recordsMap.remove(key)
     }
 
     override fun deleteAll() {
-        synchronized(recordsMap) {
-            recordsMap.clear()
-        }
+        recordsMap.clear()
     }
+
 }
