@@ -9,6 +9,10 @@ Plus, the fact that you have some sort of legendary database for persisting your
 
 Inspired by Retrofit api, CoroutinesCache is a reactive caching library for Android and Kotlin which turns your caching needs.
 
+To get full information about how library works follow next article:
+
+https://proandroiddev.com/caching-with-kotlin-coroutines-7d819276c820
+
 #### Note
 
 Coroutines Cache works only on `kotlin-coroutines:0.26.1` and above.
@@ -29,7 +33,7 @@ allprojects {
 Grab via Gradle:
 
 ```kotlin
-  implementation 'com.epam.coroutinecache:coroutinecache:0.9.0'
+  implementation 'com.epam.coroutinecache:coroutinecache:0.9.1'
 ```
 or Maven:
 
