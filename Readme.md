@@ -53,7 +53,7 @@ or Maven:
 To start use cache you need to create CoroutinesCache object: 
 
 ```kotlin
-val coroutines: Cache = CoroutinesCache(cacheParams: CacheParams, scope: CoroutineScope)
+val coroutines = CoroutinesCache(cacheParams: CacheParams, scope: CoroutineScope)
 ```
 
 Last param `CacheParam` is defining cache location, json mapper and persistence size in Mb.
@@ -94,7 +94,7 @@ interface CacheProviders {
 **Repository**
 ```kotlin
 class Repository (private val cacheDirectory: File) {
-     private val coroutinesCache: CoroutinesCache = CoroutinesCache(CacheParams(10, GsonMapper(), cacheDirectory))
+     private val coroutinesCache = CoroutinesCache(CacheParams(10, GsonMapper(), cacheDirectory))
      private val restApi = Retrofit...create(RestApi::class.java)
      private val cacheProviders = coroutinesCache.using(CacheProviders::class.java)
      
