@@ -53,14 +53,14 @@ or Maven:
 To start use cache you need to create CoroutinesCache object: 
 
 ```kotlin
-val coroutines = CoroutinesCache(cacheParams: CacheParams, scope: CoroutineScope)
+val coroutinesCache = CoroutinesCache(cacheParams: CacheParams, scope: CoroutineScope)
 ```
 
-Last param `CacheParam` is defining cache location, json mapper and persistence size in Mb.
+`CacheParams` defines cache location, json mapper and persistence size in Mb.
 
-First param is max size that could be saved in persistance in Mb.
+First param of `CacheParams` is max size that could be saved in persistence in Mb.
 
-Second param is `JsonMapper` is interface that provides one of implementation: `GsonMapper`, `JacksonMapper`, `MoshiMapper`. For each of those mappers you need to add appropriate dependency in `build.gradle` file.
+Second param is `JsonMapper` interface that provides one of several implementation: `GsonMapper`, `JacksonMapper`, `MoshiMapper`. For each of those mappers you need to add appropriate dependency in `build.gradle` file.
 
 Last param is directory where cache files will be stored. Be sure that directory exists and you has write permission there, otherwise you will get `IllegalStateException`
 
@@ -72,12 +72,12 @@ Next step you need to create an interface with functions that will describe data
 
 1. `@ProviderKey(key: String)` - **key** that will be used for saving data
 2. `@LifeTime(value: Long, timeUnit: TimeUnit)` - **value** describes how long record should be stored in memory or persistence. If this annotation isn't set, record will be stored without time limit
-3. `@Expirable` - Set **expirable** param to true. If this annotation isn't set it means that record could be deleted from persistance, even it isn't reached life limit in persistence low memory case.
-4. `@UseIfExpired` - If thisa annotation is set it means that data will be retrieved from cache even if record reached its lifetime. Could be used only once, after getting, record will be deleted from cache.
+3. `@Expirable` - Set **expirable** param to true. If this annotation isn't set it means that record could be deleted from persistence, even it hasn't reached life limit in persistence low memory case.
+4. `@UseIfExpired` - If this annotation is set it means that data will be retrieved from cache even if record reached its lifetime. Could be used only once, after getting, record will be deleted from cache.
 
 **Note:** Each method should contain only one param that has type **Deferred<T>**. This param's result will be stored in the cache. And function's return value also should be **Deferred<T>**
 
-To connect interface and CoroutinesCache and youe interface just call `CoroutinesCache.using(YourInterface::class.java)`. This method will return interface instance. To save and get data from cache just call methods from returned instance of your interface.
+To connect interface and CoroutinesCache and your interface just call `CoroutinesCache.using(YourInterface::class.java)`. This method will return interface instance. To save and get data from cache just call methods from returned instance of your interface.
 ## Example 
 
 **CacheProviders**
