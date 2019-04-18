@@ -5,6 +5,6 @@ package com.epam.coroutinecache.annotations
  *
  * @param key - data's key in cache
  */
-@Retention(AnnotationRetention.SOURCE)
+@Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FUNCTION)
 annotation class ProviderKey(val key: String)

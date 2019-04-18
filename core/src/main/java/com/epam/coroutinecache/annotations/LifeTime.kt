@@ -8,6 +8,6 @@ import java.util.concurrent.TimeUnit
  * @param value - number that describes lifetime
  * @param unit - TimeUnit of lifetime
  */
-@Retention(AnnotationRetention.SOURCE)
+@Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FUNCTION)
 annotation class LifeTime (val value: Long, val unit: TimeUnit)
