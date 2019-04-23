@@ -7,7 +7,7 @@ class MemoryCache : Memory {
 
     private val recordsMap: MutableMap<in String, Record<*>> = ConcurrentHashMap()
 
-    override fun <T> getRecord(key: String): Record<T>? {
+    override fun <T: Any> getRecord(key: String): Record<T>? {
         return try {
             if (recordsMap[key] == null) {
                 null
@@ -20,7 +20,7 @@ class MemoryCache : Memory {
         }
     }
 
-    override fun <T> saveRecord(key: String, record: Record<T>) {
+    override fun <T: Any> saveRecord(key: String, record: Record<T>) {
         recordsMap[key] = record
     }
 

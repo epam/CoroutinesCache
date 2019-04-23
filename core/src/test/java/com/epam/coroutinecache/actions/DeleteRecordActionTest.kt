@@ -9,6 +9,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.koin.core.parameter.parametersOf
 import org.koin.standalone.inject
+import java.lang.reflect.Type
 
 class DeleteRecordActionTest : BaseTest() {
 
@@ -17,14 +18,14 @@ class DeleteRecordActionTest : BaseTest() {
     @Test
     fun testDeleteRecord() {
         runBlocking {
-            saveData(KEY, Record(DATA))
+            saveData(KEY, Record(DATA), DATA::class.javaObjectType)
             deleteAction.deleteByKey(KEY)
 
             assertCacheSize(0)
 
-            saveData(KEY, Record(DATA))
-            saveData(KEY + 1, Record(DATA))
-            saveData(KEY + 2, Record(DATA))
+            saveData(KEY, Record(DATA), DATA::class.javaObjectType)
+            saveData(KEY + 1, Record(DATA), DATA::class.javaObjectType)
+            saveData(KEY + 2, Record(DATA), DATA::class.javaObjectType)
             deleteAction.deleteByKey(KEY)
 
             assertCacheSize(2)
@@ -35,7 +36,7 @@ class DeleteRecordActionTest : BaseTest() {
     fun testDeleteAllRecords() {
         runBlocking {
             for (i in 0 until 100) {
-                saveData(KEY + i, Record(DATA))
+                saveData(KEY + i, Record(DATA), DATA::class.javaObjectType)
             }
             deleteAction.deleteAll()
 
@@ -43,8 +44,8 @@ class DeleteRecordActionTest : BaseTest() {
         }
     }
 
-    private fun saveData(key: String, record: Record<*>) {
-        diskCache.saveRecord(key, record)
+    private fun saveData(key: String, record: Record<*>, type: Type) {
+        diskCache.saveRecord(key, record, type)
         memory.saveRecord(key, record)
     }
 

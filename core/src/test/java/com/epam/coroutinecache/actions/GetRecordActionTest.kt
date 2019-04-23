@@ -6,6 +6,7 @@ import com.epam.coroutinecache.core.Source
 import com.epam.coroutinecache.core.actions.GetRecordAction
 import com.epam.coroutinecache.core.actions.SaveRecordAction
 import com.epam.coroutinecache.utils.MockDataString
+import com.epam.coroutinecache.utils.Types
 import junit.framework.Assert.assertTrue
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -26,14 +27,15 @@ class GetRecordActionTest : BaseTest() {
     fun testGetSingleRecordFromMemoryAndPersistence() {
         runBlocking {
             val savingData = createMockList()
-            saveRecordAction.save(KEY, savingData)
+            val dataType = Types.newParameterizedType(List::class.java, MockDataString::class.java)
+            saveRecordAction.save(KEY, savingData, dataType)
 
-            var retrievedData: Record<Any>? = getRecordAction.getRecord(KEY)
+            var retrievedData: Record<Any>? = getRecordAction.getRecord(KEY, dataType)
             checkRetrievedDataIsCorrect(Source.MEMORY, savingData, retrievedData)
 
             memory.deleteByKey(KEY)
 
-            retrievedData = getRecordAction.getRecord(KEY)
+            retrievedData = getRecordAction.getRecord(KEY, dataType)
             checkRetrievedDataIsCorrect(Source.PERSISTENCE, savingData, retrievedData)
         }
     }
@@ -42,16 +44,17 @@ class GetRecordActionTest : BaseTest() {
     fun testGetMultiplyRecordsFromMemoryAndPersistence() {
         runBlocking {
             val savingData = createMockList()
+            val savingType = Types.newParameterizedType(List::class.java, MockDataString::class.java)
             for (i in 0 until MAX_RECORDS) {
-                saveRecordAction.save(KEY + i, savingData)
+                saveRecordAction.save(KEY + i, savingData, savingType)
             }
             for (i in 0 until MAX_RECORDS) {
-                val retrievedData: Record<Any>? = getRecordAction.getRecord(KEY + i)
+                val retrievedData: Record<Any>? = getRecordAction.getRecord(KEY + i, savingType)
                 checkRetrievedDataIsCorrect(Source.MEMORY, savingData, retrievedData)
             }
             memory.deleteAll()
             for (i in 0 until MAX_RECORDS) {
-                val retrievedData: Record<Any>? = getRecordAction.getRecord(KEY + i)
+                val retrievedData: Record<Any>? = getRecordAction.getRecord(KEY + i, savingType)
                 checkRetrievedDataIsCorrect(Source.PERSISTENCE, savingData, retrievedData)
             }
         }
@@ -61,14 +64,15 @@ class GetRecordActionTest : BaseTest() {
     fun testGetExpiredDataFromMemory() {
         runBlocking {
             val savingData = createMockList()
-            saveRecordAction.save(KEY, savingData, 1000)
+            val savingType = Types.newParameterizedType(List::class.java, MockDataString::class.java)
+            saveRecordAction.save(KEY, savingData, savingType, 1000)
 
             delay(1500)
 
-            var retrievedData: Record<Any>? = getRecordAction.getRecord(KEY, true)
+            var retrievedData: Record<Any>? = getRecordAction.getRecord(KEY, savingType, true)
             checkRetrievedDataIsCorrect(Source.MEMORY, savingData, retrievedData)
 
-            retrievedData = getRecordAction.getRecord(KEY, true)
+            retrievedData = getRecordAction.getRecord(KEY, savingType, true)
             assertEquals(retrievedData, null)
         }
     }
@@ -77,15 +81,16 @@ class GetRecordActionTest : BaseTest() {
     fun testGetExpiredDataFromPersistence() {
         runBlocking {
             val savingData = createMockList()
-            saveRecordAction.save(KEY, savingData, 1000)
+            val savingType = Types.newParameterizedType(List::class.java, MockDataString::class.java)
+            saveRecordAction.save(KEY, savingData, savingType, 1000)
 
             delay(1500)
             memory.deleteByKey(KEY)
 
-            var retrievedData: Record<Any>? = getRecordAction.getRecord(KEY, true)
+            var retrievedData: Record<Any>? = getRecordAction.getRecord(KEY, savingType, true)
             checkRetrievedDataIsCorrect(Source.PERSISTENCE, savingData, retrievedData)
 
-            retrievedData = getRecordAction.getRecord(KEY, true)
+            retrievedData = getRecordAction.getRecord(KEY, savingType, true)
             assertEquals(retrievedData, null)
         }
     }

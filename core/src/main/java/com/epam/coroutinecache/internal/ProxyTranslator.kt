@@ -1,13 +1,12 @@
 package com.epam.coroutinecache.internal
 
-import com.epam.coroutinecache.annotations.Expirable
-import com.epam.coroutinecache.annotations.LifeTime
-import com.epam.coroutinecache.annotations.ProviderKey
-import com.epam.coroutinecache.annotations.UseIfExpired
+import com.epam.coroutinecache.annotations.*
+import com.epam.coroutinecache.utils.Types
 import kotlinx.coroutines.Deferred
 import java.lang.IllegalArgumentException
 import java.lang.IllegalStateException
 import java.lang.reflect.Method
+import java.lang.reflect.Type
 import java.util.concurrent.TimeUnit
 
 /**
@@ -36,6 +35,7 @@ class ProxyTranslator {
         cacheObjectParams.useIfExpired = useMethodIfExpired(method)
         cacheObjectParams.key = getMethodKey(method)
         cacheObjectParams.loaderFun = getDataDeferred(method, objectMethods)
+        cacheObjectParams.entryType = getMethodType(method)
 
         cacheObjectParamsMap[method] = cacheObjectParams
 
@@ -61,6 +61,11 @@ class ProxyTranslator {
     private fun getMethodKey(method: Method): String {
         val annotation = method.getAnnotation(ProviderKey::class.java) ?: return method.name + method.declaringClass + method.returnType
         return annotation.key
+    }
+
+    private fun getMethodType(method: Method): Type {
+        val providerAnnotation = method.getAnnotation(ProviderKey::class.java)
+        return Types.obtainTypeFromAnnotation(providerAnnotation.entryClass)
     }
 
     private fun getDataDeferred(method: Method, objectMethods: Array<out Any>?): Deferred<*> {

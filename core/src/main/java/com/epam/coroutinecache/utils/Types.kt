@@ -1,5 +1,6 @@
 package com.epam.coroutinecache.utils
 
+import com.epam.coroutinecache.annotations.EntryClass
 import java.lang.reflect.*
 
 /**
@@ -8,6 +9,18 @@ import java.lang.reflect.*
 object Types {
 
     private val EMPTY_TYPE_ARRAY = emptyArray<Type>()
+
+    fun obtainTypeFromAnnotation(annotation: EntryClass): Type {
+        return if (annotation.typeParams.isEmpty()) {
+            if (annotation.rawType.javaObjectType.isArray) {
+                Types.arrayOf(annotation.rawType.javaObjectType)
+            } else {
+                annotation.rawType.javaObjectType
+            }
+        } else {
+            Types.newParameterizedType(annotation.rawType.javaObjectType, *annotation.typeParams.map { obtainTypeFromAnnotation(it) }.toTypedArray())
+        }
+    }
 
     /**
      * Returns a new parameterized type, applying {@code typeArguments} to {@code rawType}.
@@ -56,7 +69,7 @@ object Types {
 
             this.ownerType = if (ownerType == null) null else canonicalize(this.ownerType!!)
             this.rawType = canonicalize(this.rawType)
-            typeArguments.filter { it != null }.map { it -> canonicalize(it!!) }
+            typeArguments = typeArguments.filter { it != null }.map { canonicalize(it!!) }.toTypedArray()
         }
 
         override fun getRawType(): Type = rawType

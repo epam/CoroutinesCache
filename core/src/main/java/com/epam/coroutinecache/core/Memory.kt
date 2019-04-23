@@ -8,7 +8,7 @@ interface Memory {
      * @param key The key associated with the Record to be retrieved from memory
      * @see Record
      */
-    fun <T> getRecord(key: String): Record<T>?
+    fun <T: Any> getRecord(key: String): Record<T>?
 
     /**
      * Save the data supplied based on a certain mechanism which provides storage somehow
@@ -16,7 +16,7 @@ interface Memory {
      * @param key The key associated with the record to be saved
      * @param record The record to be saved
      */
-    fun <T> saveRecord(key: String, record: Record<T>)
+    fun <T: Any> saveRecord(key: String, record: Record<T>)
 
     /**
      * Retrieve the keys from all records saved
