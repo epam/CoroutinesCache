@@ -8,7 +8,7 @@ interface ProcessorProvider {
      * @param cacheObjectParams params for requesting cache object
      * @return <T> the associated data
     */
-    suspend fun <T: Any> process(cacheObjectParams: CacheObjectParams?): T?
+    suspend fun <T> process(cacheObjectParams: CacheObjectParams?): T?
 
     /**
      * Destroy the entire cache

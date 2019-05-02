@@ -10,7 +10,7 @@ import com.epam.coroutinecache.utils.getClassName
  * @param lifeTimeMillis - Long. Record life time in millis
  * @param source - Source from data was retrieved
  */
-class Record<T: Any>(
+class Record<T>(
         private val data: T? = null,
         private var expirable: Boolean = true,
         private var lifeTimeMillis: Long = 0

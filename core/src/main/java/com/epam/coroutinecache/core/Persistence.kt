@@ -17,7 +17,7 @@ interface Persistence {
      * @param key The key associated with the record to be persisted
      * @param record The record to be persisted
      */
-    fun <T: Any> saveRecord(key: String, record: Record<T>, entryType: Type)
+    fun <T> saveRecord(key: String, record: Record<T>, entryType: Type)
 
     /**
      * Delete the data associated with its particular key
@@ -48,5 +48,5 @@ interface Persistence {
      * @param type Type that used to object deserialization
      * @see Record
      */
-    fun <T: Any> getRecord(key: String, entryType: Type): Record<T>?
+    fun <T> getRecord(key: String, entryType: Type): Record<T>?
 }

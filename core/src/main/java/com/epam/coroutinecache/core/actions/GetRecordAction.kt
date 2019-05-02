@@ -22,7 +22,7 @@ class GetRecordAction(
      * If record is expired and flag useIfExpired is true then return record and delete it from cache,
      * otherwise only delete record from cache and return null
      */
-    suspend fun <T: Any> getRecord(key: String, entryType: Type, useRecordEvenIfExpired: Boolean = false): Record<T>? = scope.async {
+    suspend fun <T> getRecord(key: String, entryType: Type, useRecordEvenIfExpired: Boolean = false): Record<T>? = scope.async {
         var record = memory.getRecord<T>(key)
 
         if (record != null) {

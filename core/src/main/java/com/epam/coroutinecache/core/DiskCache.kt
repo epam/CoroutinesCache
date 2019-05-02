@@ -11,7 +11,7 @@ class DiskCache(
         private val jsonMapper: JsonMapper
 ): Persistence {
 
-    override fun <T: Any> saveRecord(key: String, record: Record<T>, entryType: Type) = synchronized(this) {
+    override fun <T> saveRecord(key: String, record: Record<T>, entryType: Type) = synchronized(this) {
         val safetyKey = safetyKey(key)
         val type = jsonMapper.newParameterizedType(Record::class.java, entryType)
         val serializedJson = jsonMapper.toJson(record, type)
@@ -66,7 +66,7 @@ class DiskCache(
         }
     }
 
-    override fun <T : Any> getRecord(key: String, entryType: Type): Record<T>? {
+    override fun <T> getRecord(key: String, entryType: Type): Record<T>? {
         synchronized(this) {
             return try {
                 val safetyKey = safetyKey(key)
