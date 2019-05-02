@@ -62,7 +62,7 @@ class DiskCache(
                     result += it.length()
                 }
             }
-            return (result.toFloat() / 1024 / 1024).toLong()
+            return (result.toFloat() / sizeMb).toLong()
         }
     }
 
@@ -73,7 +73,7 @@ class DiskCache(
                 val resultedFile = File(cacheDirectory, safetyKey)
                 val type = jsonMapper.newParameterizedType(Record::class.java, entryType)
                 val diskRecord: Record<T>? = jsonMapper.fromJson(resultedFile, type)
-                diskRecord?.sizeOnMb = (resultedFile.length().toFloat() / 1024 / 1024)
+                diskRecord?.sizeOnMb = (resultedFile.length().toFloat() / sizeMb)
                 diskRecord
             } catch (exception: Exception) {
                 null
@@ -83,4 +83,8 @@ class DiskCache(
 
     private fun safetyKey(key: String) = key.replace("/", "_")
 
+    companion object {
+        private const val sizeKb = 1024.0f
+        private const val sizeMb = sizeKb * sizeKb
+    }
 }
