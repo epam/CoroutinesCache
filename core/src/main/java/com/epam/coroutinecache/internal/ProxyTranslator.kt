@@ -4,11 +4,11 @@ import com.epam.coroutinecache.annotations.Expirable
 import com.epam.coroutinecache.annotations.LifeTime
 import com.epam.coroutinecache.annotations.ProviderKey
 import com.epam.coroutinecache.annotations.UseIfExpired
-import kotlinx.coroutines.Deferred
 import java.lang.IllegalArgumentException
 import java.lang.IllegalStateException
 import java.lang.reflect.Method
 import java.util.concurrent.TimeUnit
+import kotlin.reflect.KCallable
 
 /**
  * Class that retrieves all object params from annotations and function that
@@ -18,7 +18,7 @@ class ProxyTranslator {
 
     private val cacheObjectParamsMap: MutableMap<Method, CacheObjectParams> = HashMap()
 
-    fun processMethod(method: Method?, objectMethods: Array<out Any>?): CacheObjectParams? {
+    fun processMethod(method: Method?, methodArgs: Array<out Any>?): CacheObjectParams? {
         if (method == null) {
             return null
         }
@@ -35,7 +35,8 @@ class ProxyTranslator {
         cacheObjectParams.isExpirable = isMethodExpirable(method)
         cacheObjectParams.useIfExpired = useMethodIfExpired(method)
         cacheObjectParams.key = getMethodKey(method)
-        cacheObjectParams.loaderFun = getDataDeferred(method, objectMethods)
+
+        cacheObjectParams.loaderFun = getDataSuspend(method, methodArgs)
 
         cacheObjectParamsMap[method] = cacheObjectParams
 
@@ -63,18 +64,18 @@ class ProxyTranslator {
         return annotation.key
     }
 
-    private fun getDataDeferred(method: Method, objectMethods: Array<out Any>?): Deferred<*> {
-        val deferred: Deferred<*> = getObjectFromMethodParam(method, Deferred::class.java, objectMethods) ?:
-                throw IllegalStateException("${method.name} requires an deferred instance")
-        return deferred
+    private fun getDataSuspend(method: Method, methodArgs: Array<out Any>?): KCallable<*> {
+        val dataProvider: KCallable<*>? = getObjectFromMethodParam(method, KCallable::class.java, methodArgs)
+        if (dataProvider == null || !dataProvider.isSuspend) throw IllegalStateException("${method.name} requires an suspend instance")
+        return dataProvider
     }
 
-    private fun <T> getObjectFromMethodParam(method: Method, expectedClass: Class<T>, objectMethods: Array<out Any>?): T? {
-        if (objectMethods == null) return null
+    private fun <T> getObjectFromMethodParam(method: Method, expectedClass: Class<T>, methodArgs: Array<out Any>?): T? {
+        if (methodArgs == null) return null
         var countSameObjectsType = 0
         var expectedObject: T? = null
 
-        for (objectParam in objectMethods) {
+        for (objectParam in methodArgs) {
             if (expectedClass.isAssignableFrom(objectParam!!::class.java)) {
                 expectedObject = objectParam as T
                 ++countSameObjectsType

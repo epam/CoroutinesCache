@@ -1,7 +1,7 @@
 package com.epam.coroutinecache.internal
 
-import kotlinx.coroutines.Deferred
 import java.util.concurrent.TimeUnit
+import kotlin.reflect.KCallable
 
 data class CacheObjectParams (
         var key: String = "",
@@ -9,5 +9,5 @@ data class CacheObjectParams (
         var timeUnit: TimeUnit = TimeUnit.MILLISECONDS,
         var isExpirable: Boolean = false,
         var useIfExpired: Boolean = false,
-        var loaderFun: Deferred<*>? = null
+        var loaderFun: KCallable<*>? = null
 )
