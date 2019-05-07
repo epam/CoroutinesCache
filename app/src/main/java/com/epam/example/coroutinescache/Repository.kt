@@ -3,7 +3,6 @@ package com.epam.example.coroutinescache
 import com.epam.coroutinecache.api.CacheParams
 import com.epam.coroutinecache.api.CoroutinesCache
 import com.epam.coroutinecache.mappers.GsonMapper
-import kotlinx.coroutines.Deferred
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
@@ -21,5 +20,5 @@ class Repository (
 
     private val cacheProviders: CacheProviders = coroutinesCache.using(CacheProviders::class.java)
 
-    fun getData(): Deferred<Data> = cacheProviders.getData(restApi::getData)
+    suspend fun getData(): Data = cacheProviders.getData(restApi::getData)
 }
