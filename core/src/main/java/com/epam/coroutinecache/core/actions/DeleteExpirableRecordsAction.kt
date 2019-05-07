@@ -31,7 +31,7 @@ class DeleteExpirableRecordsAction(
                 if (reachedPercentageMemoryToStop(storedMB, releasedMB)) {
                     return@loop
                 }
-                val record = diskCache.getRecord<Any>(it)
+                val record = diskCache.getRecord<Any>(it, Any::class.java)
                 if (record == null || !record.isExpirable()) return@forEach
                 diskCache.deleteByKey(it)
                 releasedMB += record.sizeOnMb

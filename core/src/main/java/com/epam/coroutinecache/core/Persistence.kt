@@ -1,5 +1,7 @@
 package com.epam.coroutinecache.core
 
+import java.lang.reflect.Type
+
 
 /**
  * Provides the persistence layer for the cache A default implementation which store the objects in
@@ -15,7 +17,7 @@ interface Persistence {
      * @param key The key associated with the record to be persisted
      * @param record The record to be persisted
      */
-    fun <T> saveRecord(key: String, record: Record<T>)
+    fun <T> saveRecord(key: String, record: Record<T>, entryType: Type)
 
     /**
      * Delete the data associated with its particular key
@@ -43,7 +45,8 @@ interface Persistence {
      * Get the record associated with its particular key
      *
      * @param key The key associated with the Record to be retrieved from persistence
+     * @param type Type that used to object deserialization
      * @see Record
      */
-    fun <T> getRecord(key: String): Record<T>?
+    fun <T> getRecord(key: String, entryType: Type): Record<T>?
 }
