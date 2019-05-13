@@ -1,6 +1,5 @@
 package com.epam.coroutinecache.internal
 
-import com.epam.coroutinecache.annotations.*
 import com.epam.coroutinecache.utils.Types
 import com.epam.coroutinecache.annotations.Expirable
 import com.epam.coroutinecache.annotations.LifeTime
