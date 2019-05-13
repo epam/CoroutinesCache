@@ -3,6 +3,7 @@ package com.epam.coroutinecache.actions
 import com.epam.coroutinecache.BaseTest
 import com.epam.coroutinecache.core.actions.SaveRecordAction
 import com.epam.coroutinecache.utils.MockDataString
+import com.epam.coroutinecache.utils.Types
 import junit.framework.Assert.assertTrue
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.runBlocking
@@ -18,7 +19,7 @@ class SaveRecordActionTest : BaseTest() {
     fun testSaveRecord() {
         runBlocking {
             for (i in 0 until RECORDS_COUNT) {
-                saveAction.save(KEY + i, createMockList()).await()
+                saveAction.save(KEY + i, createMockList(), Types.newParameterizedType(List::class.java, MockDataString::class.java)).await()
             }
             assertTrue(diskCache.storedMB() <= MAX_MB_CACHE_SIZE)
             assertTrue(memory.keySet().size == RECORDS_COUNT)
@@ -31,12 +32,12 @@ class SaveRecordActionTest : BaseTest() {
         val maxCount = (MAX_MB_CACHE_SIZE * MAX_AVAILABLE_SIZE_COEFF / RECORD_SIZE).toInt()
         runBlocking {
             for (i in 0 until maxCount) {
-                saveAction.save(KEY + i, createMockList()).await()
+                saveAction.save(KEY + i, createMockList(), Types.newParameterizedType(List::class.java, MockDataString::class.java)).await()
             }
             assertTrue(diskCache.allKeys().size == maxCount)
 
             val expectedCountAfterDelete = (MAX_MB_CACHE_SIZE * COMFORTABLE_COEFF / RECORD_SIZE).toInt()
-            saveAction.save(KEY + maxCount, createMockList()).await()
+            saveAction.save(KEY + maxCount, createMockList(), Types.newParameterizedType(List::class.java, MockDataString::class.java)).await()
 
             assertTrue(diskCache.allKeys().size == expectedCountAfterDelete)
         }

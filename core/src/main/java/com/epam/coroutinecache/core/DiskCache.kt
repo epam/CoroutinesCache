@@ -4,16 +4,16 @@ import com.epam.coroutinecache.mappers.JsonMapper
 import java.io.File
 import java.io.FileWriter
 import java.lang.Exception
-import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
 
 class DiskCache(
-        private val cacheDirectory: File,
+        external val cacheDirectory: File,
         private val jsonMapper: JsonMapper
 ): Persistence {
 
-    override fun <T> saveRecord(key: String, record: Record<T>) = synchronized(this) {
+    override fun <T> saveRecord(key: String, record: Record<T>, entryType: Type) = synchronized(this) {
         val safetyKey = safetyKey(key)
-        val type = jsonMapper.newParameterizedType(Record::class.java, Object::class.java)
+        val type = jsonMapper.newParameterizedType(Record::class.java, entryType)
         val serializedJson = jsonMapper.toJson(record, type)
 
         val resultedFile = File(cacheDirectory, safetyKey)
@@ -62,52 +62,29 @@ class DiskCache(
                     result += it.length()
                 }
             }
-            return (result.toFloat() / 1024 / 1024).toLong()
+            return (result.toFloat() / sizeMb).toLong()
         }
     }
 
-    override fun <T> getRecord(key: String): Record<T>? {
+    override fun <T> getRecord(key: String, entryType: Type): Record<T>? {
         synchronized(this) {
-            try {
+            return try {
                 val safetyKey = safetyKey(key)
                 val resultedFile = File(cacheDirectory, safetyKey)
-                val type = jsonMapper.newParameterizedType(Record::class.java, Object::class.java)
-                val tempData: Record<T>? = jsonMapper.fromJson(resultedFile, type)
-
-                val dataClassName = if (tempData?.getDataClassName() == null) Object::class.java else Class.forName(tempData.getDataClassName())
-                val collectionClassName = if (tempData?.getDataCollectionClassName() == null) Object::class.java else Class.forName(tempData.getDataCollectionClassName())
-
-                val isCollection = Collection::class.java.isAssignableFrom(collectionClassName)
-                val isArray = collectionClassName.isArray
-                val isMap = Map::class.java.isAssignableFrom(collectionClassName)
-                val typeRecord: ParameterizedType
-
-                when {
-                    isCollection -> {
-                        val typeCollection = jsonMapper.newParameterizedType(collectionClassName, dataClassName)
-                        typeRecord = jsonMapper.newParameterizedType(Record::class.java, typeCollection)
-                    }
-                    isArray -> {
-                        typeRecord = jsonMapper.newParameterizedType(Record::class.java, collectionClassName)
-                    }
-                    isMap -> {
-                        val classKeyMap = Class.forName(tempData?.getDataKeyMapClassName())
-                        val typeMap = jsonMapper.newParameterizedType(collectionClassName, classKeyMap, dataClassName)
-                        typeRecord = jsonMapper.newParameterizedType(Record::class.java, typeMap)
-                    }
-                    else -> {
-                        typeRecord = jsonMapper.newParameterizedType(Record::class.java, dataClassName)
-                    }
-                }
-                val diskRecord: Record<T>? = jsonMapper.fromJson(resultedFile.absoluteFile, typeRecord)
-                diskRecord?.sizeOnMb = (resultedFile.length().toFloat() / 1024 / 1024)
-                return diskRecord
+                val type = jsonMapper.newParameterizedType(Record::class.java, entryType)
+                val diskRecord: Record<T>? = jsonMapper.fromJson(resultedFile, type)
+                diskRecord?.sizeOnMb = (resultedFile.length().toFloat() / sizeMb)
+                diskRecord
             } catch (exception: Exception) {
-                return null
+                null
             }
         }
     }
 
     private fun safetyKey(key: String) = key.replace("/", "_")
 
+    companion object {
+        private const val sizeKb = 1024.0f
+        private const val sizeMb = sizeKb * sizeKb
+    }
 }

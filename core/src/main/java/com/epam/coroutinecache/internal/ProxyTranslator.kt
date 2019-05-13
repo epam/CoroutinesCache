@@ -1,5 +1,6 @@
 package com.epam.coroutinecache.internal
 
+import com.epam.coroutinecache.utils.Types
 import com.epam.coroutinecache.annotations.Expirable
 import com.epam.coroutinecache.annotations.LifeTime
 import com.epam.coroutinecache.annotations.ProviderKey
@@ -7,6 +8,7 @@ import com.epam.coroutinecache.annotations.UseIfExpired
 import java.lang.IllegalArgumentException
 import java.lang.IllegalStateException
 import java.lang.reflect.Method
+import java.lang.reflect.Type
 import java.util.concurrent.TimeUnit
 import kotlin.reflect.KCallable
 
@@ -35,8 +37,8 @@ class ProxyTranslator {
         cacheObjectParams.isExpirable = isMethodExpirable(method)
         cacheObjectParams.useIfExpired = useMethodIfExpired(method)
         cacheObjectParams.key = getMethodKey(method)
-
         cacheObjectParams.loaderFun = getDataSuspend(method, methodArgs)
+        cacheObjectParams.entryType = getMethodType(method)
 
         cacheObjectParamsMap[method] = cacheObjectParams
 
@@ -62,6 +64,12 @@ class ProxyTranslator {
     private fun getMethodKey(method: Method): String {
         val annotation = method.getAnnotation(ProviderKey::class.java) ?: return method.name + method.declaringClass + method.returnType
         return annotation.key
+    }
+
+
+    private fun getMethodType(method: Method): Type {
+        val providerAnnotation = method.getAnnotation(ProviderKey::class.java)
+        return Types.obtainTypeFromAnnotation(providerAnnotation.entryClass)
     }
 
     private fun getDataSuspend(method: Method, methodArgs: Array<out Any>?): KCallable<*> {

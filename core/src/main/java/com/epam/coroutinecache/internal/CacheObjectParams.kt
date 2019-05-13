@@ -1,5 +1,6 @@
 package com.epam.coroutinecache.internal
 
+import java.lang.reflect.Type
 import java.util.concurrent.TimeUnit
 import kotlin.reflect.KCallable
 
@@ -9,5 +10,6 @@ data class CacheObjectParams (
         var timeUnit: TimeUnit = TimeUnit.MILLISECONDS,
         var isExpirable: Boolean = false,
         var useIfExpired: Boolean = false,
-        var loaderFun: KCallable<*>? = null
+        var loaderFun: KCallable<*>? = null,
+        var entryType: Type? = null
 )

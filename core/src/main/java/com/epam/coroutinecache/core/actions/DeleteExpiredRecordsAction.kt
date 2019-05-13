@@ -21,7 +21,7 @@ class DeleteExpiredRecordsAction(
         val diskCacheKeys = diskCache.allKeys()
 
         diskCacheKeys.forEach {
-            val record = diskCache.getRecord<Any>(it)
+            val record = diskCache.getRecord<Any>(it, Any::class.java)
 
             if (record != null && recordExpiredChecker.hasRecordExpired(record)) {
                 diskCache.deleteByKey(it)
