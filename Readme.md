@@ -75,7 +75,7 @@ Next step you need to create an interface with functions that will describe data
 3. `@Expirable` - Set **expirable** param to true. If this annotation isn't set it means that record could be deleted from persistence, even it hasn't reached life limit in persistence low memory case.
 4. `@UseIfExpired` - If this annotation is set it means that data will be retrieved from cache even if record reached its lifetime. Could be used only once, after getting, record will be deleted from cache.
 
-**Note:** Each method should contain only one param that has type **Deferred<T>**. This param's result will be stored in the cache. And function's return value also should be **Deferred<T>**
+**Note:** Each method should be a suspend function containing only one param that is also a suspend function without params that returns type **T**. It's result will be stored in the cache. And function's return value also should be **<T>**
 
 To connect interface and CoroutinesCache and your interface just call `CoroutinesCache.using(YourInterface::class.java)`. This method will return interface instance. To save and get data from cache just call methods from returned instance of your interface.
 ## Example 
@@ -87,7 +87,7 @@ interface CacheProviders {
     @LifeTime(value = 1L, unit = TimeUnit.MINUTES)
     @Expirable
     @UseIfExpired
-    fun getData(data: Deferred<Data>): Deferred<Data>
+    suspend fun getData(dataProvider: suspend () -> Data): Data
 }
 ```
 
@@ -98,7 +98,7 @@ class Repository (private val cacheDirectory: File) {
      private val restApi = Retrofit...create(RestApi::class.java)
      private val cacheProviders = coroutinesCache.using(CacheProviders::class.java)
      
-     fun getData(): Deferred<Data> = cacheProviders.getData(restApi.getData())
+     suspend fun getData(): Data = cacheProviders.getData(restApi::getData)
 }
 ```
 **MainActivity**
@@ -109,7 +109,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         GlobalScope.launch (Dispatchers.Main) {
-            val data = persistence.getData().await()
+            val data = persistence.getData()
             messageView.text = data.toString()
         }
     }

@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun onClick() {
         GlobalScope.launch (Dispatchers.Main) {
-            val data = persistence.getData().await()
+            val data = persistence.getData()
             messageView.text = data.toString()
         }
     }

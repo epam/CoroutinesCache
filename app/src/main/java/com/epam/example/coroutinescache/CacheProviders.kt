@@ -10,5 +10,5 @@ interface CacheProviders {
     @LifeTime(value = 1L, unit = TimeUnit.MINUTES)
     @Expirable
     @UseIfExpired
-    fun getData(data: Deferred<Data>): Deferred<Data>
+    suspend fun getData(dataProvider: suspend () -> Data): Data
 }

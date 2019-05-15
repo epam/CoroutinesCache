@@ -7,10 +7,10 @@ import com.epam.coroutinecache.core.actions.GetRecordAction
 import com.epam.coroutinecache.core.actions.SaveRecordAction
 import com.epam.coroutinecache.utils.CacheLog
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
 import org.koin.core.parameter.parametersOf
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
+import kotlin.reflect.full.callSuspend
 
 class ProcessorProviderImpl(
         private val cacheParams: CacheParams,
@@ -28,7 +28,7 @@ class ProcessorProviderImpl(
         val record = getRecordAction.getRecord<T>(cacheObjectParams.key, cacheObjectParams.entryType!!, cacheObjectParams.useIfExpired)
         return if (record == null) {
             deleteRecordAction.deleteByKey(cacheObjectParams.key)
-            val data = (cacheObjectParams.loaderFun as? Deferred<T>)?.await()
+            val data = cacheObjectParams.loaderFun?.callSuspend() as T?
             saveRecordAction.save(cacheObjectParams.key, data, cacheObjectParams.entryType!!, cacheObjectParams.timeUnit.toMillis(cacheObjectParams.lifeTime), cacheObjectParams.isExpirable).await()
             CacheLog.logMessage("Got data from source: ${Source.CLOUD}")
             data

@@ -3,13 +3,16 @@ package com.epam.coroutinecache.internal
 import com.epam.coroutinecache.api.CacheParams
 import com.epam.coroutinecache.core.Persistence
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlin.coroutines.intrinsics.COROUTINE_SUSPENDED
 import org.koin.core.parameter.parametersOf
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.get
 import org.koin.standalone.inject
 import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Method
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.resume
 
 class ProxyProvider(
         private val cacheParams: CacheParams,
@@ -22,7 +25,19 @@ class ProxyProvider(
 
     private val processorProvider: ProcessorProvider = ProcessorProviderImpl(cacheParams, scope)
 
-    override fun invoke(proxy: Any?, method: Method?, objectMethods: Array<out Any>?): Any? = scope.async {
-        return@async processorProvider.process<Any>(proxyTranslator.processMethod(method, objectMethods))
+    override fun invoke(proxy: Any?, method: Method?, methodArgs: Array<out Any>?): Any? {
+        val lastArg = methodArgs?.lastOrNull()
+        return if (lastArg is Continuation<*>) {
+            @Suppress("UNCHECKED_CAST")
+            val cont = lastArg as? Continuation<Any?>
+            val otherArgs = methodArgs.take(methodArgs.size - 1).toTypedArray()
+            scope.launch {
+                val data = processorProvider.process<Any>(proxyTranslator.processMethod(method, otherArgs))
+                cont?.resume(data)
+            }
+            COROUTINE_SUSPENDED
+        } else {
+            null
+        }
     }
 }
