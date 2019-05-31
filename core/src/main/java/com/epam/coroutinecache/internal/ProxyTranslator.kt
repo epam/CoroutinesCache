@@ -83,7 +83,7 @@ class ProxyTranslator {
         var expectedObject: T? = null
 
         for (objectParam in methodArgs) {
-            if (expectedClass.isAssignableFrom(objectParam!!::class.java)) {
+            if (expectedClass.isAssignableFrom(objectParam::class.java)) {
                 expectedObject = objectParam as T
                 ++countSameObjectsType
             }
