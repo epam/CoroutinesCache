@@ -8,6 +8,7 @@ class MemoryCache : Memory {
     private val recordsMap: MutableMap<in String, Record<*>> = ConcurrentHashMap()
 
     override fun <T> getRecord(key: String): Record<T>? {
+        @Suppress("TooGenericExceptionCaught")
         return try {
             if (recordsMap[key] == null) {
                 null

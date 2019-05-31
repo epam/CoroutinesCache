@@ -67,6 +67,7 @@ class DiskCache(
 
     override fun <T> getRecord(key: String, entryType: Type): Record<T>? {
         synchronized(this) {
+            @Suppress("TooGenericExceptionCaught")
             return try {
                 val safetyKey = safetyKey(key)
                 val resultedFile = File(cacheDirectory, safetyKey)

@@ -20,6 +20,7 @@ class ProxyTranslator {
 
     private val cacheObjectParamsMap: MutableMap<Method, CacheObjectParams> = HashMap()
 
+    @Suppress("ReturnCount")
     fun processMethod(method: Method?, methodArgs: Array<out Any>?): CacheObjectParams? {
         if (method == null) {
             return null

@@ -28,6 +28,7 @@ class MoshiMapper(
         return jsonAdapter.fromJson(JsonReader.of(bufferedSource))
     }
 
+    @Suppress("SpreadOperator")
     override fun newParameterizedType(rawType: Type, vararg typeArguments: Type): ParameterizedType =
             Types.newParameterizedType(rawType, *typeArguments)
 }

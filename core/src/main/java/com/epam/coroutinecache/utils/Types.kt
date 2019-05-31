@@ -17,18 +17,20 @@ object Types {
     fun obtainTypeFromAnnotation(annotation: EntryClass): Type {
         return if (annotation.typeParams.isEmpty()) {
             if (annotation.rawType.javaObjectType.isArray) {
-                Types.arrayOf(annotation.rawType.javaObjectType)
+                arrayOf(annotation.rawType.javaObjectType)
             } else {
                 annotation.rawType.javaObjectType
             }
         } else {
-            Types.newParameterizedType(annotation.rawType.javaObjectType, *annotation.typeParams.map { obtainTypeFromAnnotation(it) }.toTypedArray())
+            @Suppress("SpreadOperator")
+            newParameterizedType(annotation.rawType.javaObjectType, *annotation.typeParams.map { obtainTypeFromAnnotation(it) }.toTypedArray())
         }
     }
 
     /**
      * Returns a new parameterized type, applying {@code typeArguments} to {@code rawType}.
      */
+    @Suppress("SpreadOperator")
     fun newParameterizedType(rawType: Type, vararg types: Type): ParameterizedType = ParameterizedTypeImpl(null, rawType, arrayOf(*types))
 
     /**
@@ -37,26 +39,22 @@ object Types {
     fun arrayOf(componentType: Type): GenericArrayType = GenericArrayTypeImpl(componentType)
 
     fun canonicalize(type: Type): Type {
+        var result = type
         when (type) {
             is Class<*> -> {
-                return if (type.isArray) GenericArrayTypeImpl(canonicalize(type.componentType)) else type
+                if (type.isArray) result = GenericArrayTypeImpl(canonicalize(type.componentType))
             }
             is ParameterizedType -> {
-                if (type is ParameterizedTypeImpl) return type
-                return ParameterizedTypeImpl(type.ownerType, type.rawType, type.actualTypeArguments)
+                if (type !is ParameterizedTypeImpl) result = ParameterizedTypeImpl(type.ownerType, type.rawType, type.actualTypeArguments)
             }
             is GenericArrayType -> {
-                if (type is GenericArrayTypeImpl) return type
-                return GenericArrayTypeImpl(type.genericComponentType)
+                if (type !is GenericArrayTypeImpl) result = GenericArrayTypeImpl(type.genericComponentType)
             }
             is WildcardType -> {
-                if (type is WildcardTypeImpl) return type
-                return WildcardTypeImpl(type.upperBounds, type.lowerBounds)
-            }
-            else -> {
-                return type
+                if (type !is WildcardTypeImpl) result = WildcardTypeImpl(type.upperBounds, type.lowerBounds)
             }
         }
+        return result
     }
 
     private class ParameterizedTypeImpl(

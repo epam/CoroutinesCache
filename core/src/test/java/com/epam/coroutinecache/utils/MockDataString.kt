@@ -11,4 +11,6 @@ class MockDataString(
     override fun equals(other: Any?): Boolean {
         return other != null && other is MockDataString && other.message == this.message
     }
+
+    override fun hashCode(): Int = message.hashCode()
 }

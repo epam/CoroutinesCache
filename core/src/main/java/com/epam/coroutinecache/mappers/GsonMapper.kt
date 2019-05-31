@@ -23,6 +23,7 @@ class GsonMapper(
         return objectValue
     }
 
+    @Suppress("SpreadOperator")
     override fun newParameterizedType(rawType: Type, vararg typeArguments: Type): ParameterizedType =
             Types.newParameterizedType(rawType, *typeArguments)
 }

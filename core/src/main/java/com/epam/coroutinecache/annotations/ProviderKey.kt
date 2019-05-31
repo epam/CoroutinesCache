@@ -16,7 +16,8 @@ annotation class ProviderKey(val key: String, val entryClass: EntryClass)
  * Annotation that describes how to build type for entry class
  *
  * @param rawType - data's raw type, could be Foo:class, for list List::class should be passed
- * @param typeParams - data's type params, for example, for List you should pass entire class, for example Foo::class, or for Map you should pass two classes - first will be used for key and second for value
+ * @param typeParams - data's type params, for example, for List you should pass entire class, for example Foo::class, or for Map you should pass
+ * two classes - first will be used for key and second for value
  */
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FUNCTION)

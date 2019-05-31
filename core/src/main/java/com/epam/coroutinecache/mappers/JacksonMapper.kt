@@ -32,6 +32,7 @@ class JacksonMapper(
         return objectMapper.readValue(file, typeReference)
     }
 
+    @Suppress("SpreadOperator")
     override fun newParameterizedType(rawType: Type, vararg typeArguments: Type): ParameterizedType =
             Types.newParameterizedType(rawType, *typeArguments)
 }
