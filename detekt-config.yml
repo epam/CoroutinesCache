@@ -1,4 +1,4 @@
-autoCorrect: true
+autoCorrect: false
 
 test-pattern: # Configure exclusions for test sources
   active: true
@@ -25,7 +25,7 @@ test-pattern: # Configure exclusions for test sources
     - 'InstanceOfCheckForException'
 
 build:
-  maxIssues: 10
+  maxIssues: 0
   weights:
     # complexity: 2
     # LongParameterList: 1
@@ -222,7 +222,7 @@ formatting:
     continuationIndentSize: 4
   MaximumLineLength:
     active: true
-    maxLineLength: 120
+    maxLineLength: 150
   ModifierOrdering:
     active: true
     autoCorrect: true
@@ -445,7 +445,7 @@ style:
     active: false
   MaxLineLength:
     active: true
-    maxLineLength: 120
+    maxLineLength: 150
     excludePackageStatements: true
     excludeImportStatements: true
     excludeCommentStatements: false
@@ -456,7 +456,7 @@ style:
   NestedClassesVisibility:
     active: false
   NewLineAtEndOfFile:
-    active: true
+    active: false
   NoTabs:
     active: false
   OptionalAbstractKeyword:
