@@ -10,7 +10,7 @@ task ktlint(type: JavaExec, group: LifecycleBasePlugin.VERIFICATION_GROUP) {
             'app/src/**/*.kt',
             'core/src/**/*.kt',
             '--reporter=plain',
-            "--reporter=html,artifact=com.github.mcassiano:ktlint-html-reporter:master-SNAPSHOT,output=$buildDir/reports/ktlint.html"
+            "--reporter=checkstyle,output=$buildDir/reports/ktlint-checkstyle.xml"
 }
 
 task ktlintFormat(type: JavaExec, group: 'formatting') {
