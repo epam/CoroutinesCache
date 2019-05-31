@@ -8,7 +8,7 @@ import com.epam.coroutinecache.mappers.MoshiMapper
 class MapperProvider {
 
     fun provideMapperByChooser(chooser: JsonFactoryChooser): JsonMapper {
-        return when(chooser) {
+        return when (chooser) {
             JsonFactoryChooser.MOSHI -> MoshiMapper()
             JsonFactoryChooser.GSON -> GsonMapper()
             JsonFactoryChooser.JACKSON -> JacksonMapper()

@@ -18,7 +18,7 @@ class SaveRecordAction(
         private val memory: Memory,
         private val maxMbCacheSize: Int,
         private val scope: CoroutineScope
-): KoinComponent {
+) : KoinComponent {
 
     private val deleteExpirableRecordsAction: DeleteExpirableRecordsAction by inject { parametersOf(maxMbCacheSize, scope) }
 

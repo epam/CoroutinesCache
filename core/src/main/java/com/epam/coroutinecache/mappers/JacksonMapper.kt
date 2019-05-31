@@ -10,7 +10,7 @@ import java.lang.reflect.Type
 
 class JacksonMapper(
         private val objectMapper: ObjectMapper = ObjectMapper()
-): JsonMapper {
+) : JsonMapper {
 
     init {
         this.objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
@@ -19,18 +19,19 @@ class JacksonMapper(
     override fun toJson(src: Any, typeOfSrc: Type): String = objectMapper.writeValueAsString(src)
 
     override fun <T> fromJson(json: String, type: Type): T {
-        val typeReference: TypeReference<T> = object: TypeReference<T>() {
+        val typeReference: TypeReference<T> = object : TypeReference<T>() {
             override fun getType(): Type = type
         }
         return objectMapper.readValue(json, typeReference)
     }
 
     override fun <T> fromJson(file: File, typeOfT: Type): T? {
-        val typeReference: TypeReference<T> = object: TypeReference<T>() {
+        val typeReference: TypeReference<T> = object : TypeReference<T>() {
             override fun getType(): Type = typeOfT
         }
         return objectMapper.readValue(file, typeReference)
     }
 
-    override fun newParameterizedType(rawType: Type, vararg typeArguments: Type): ParameterizedType = Types.newParameterizedType(rawType, *typeArguments)
+    override fun newParameterizedType(rawType: Type, vararg typeArguments: Type): ParameterizedType =
+            Types.newParameterizedType(rawType, *typeArguments)
 }

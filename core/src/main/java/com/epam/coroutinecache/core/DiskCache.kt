@@ -3,13 +3,12 @@ package com.epam.coroutinecache.core
 import com.epam.coroutinecache.mappers.JsonMapper
 import java.io.File
 import java.io.FileWriter
-import java.lang.Exception
 import java.lang.reflect.Type
 
 class DiskCache(
         external val cacheDirectory: File,
         private val jsonMapper: JsonMapper
-): Persistence {
+) : Persistence {
 
     override fun <T> saveRecord(key: String, record: Record<T>, entryType: Type) = synchronized(this) {
         val safetyKey = safetyKey(key)

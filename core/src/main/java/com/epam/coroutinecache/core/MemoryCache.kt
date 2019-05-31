@@ -33,5 +33,4 @@ class MemoryCache : Memory {
     override fun deleteAll() {
         recordsMap.clear()
     }
-
 }

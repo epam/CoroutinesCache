@@ -10,4 +10,4 @@ import java.util.concurrent.TimeUnit
  */
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FUNCTION)
-annotation class LifeTime (val value: Long, val unit: TimeUnit)
+annotation class LifeTime(val value: Long, val unit: TimeUnit)

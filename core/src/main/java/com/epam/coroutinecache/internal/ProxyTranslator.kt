@@ -45,7 +45,6 @@ class ProxyTranslator {
         return cacheObjectParams
     }
 
-
     private fun getMethodLifeTime(method: Method): Pair<Long, TimeUnit>? {
         val lifeTimeAnnotation = method.getAnnotation(LifeTime::class.java) ?: return null
         return Pair(lifeTimeAnnotation.value, lifeTimeAnnotation.unit)
@@ -65,7 +64,6 @@ class ProxyTranslator {
         val annotation = method.getAnnotation(ProviderKey::class.java) ?: return method.name + method.declaringClass + method.returnType
         return annotation.key
     }
-
 
     private fun getMethodType(method: Method): Type {
         val providerAnnotation = method.getAnnotation(ProviderKey::class.java)
@@ -96,5 +94,4 @@ class ProxyTranslator {
 
         return expectedObject
     }
-
 }

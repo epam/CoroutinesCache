@@ -6,7 +6,9 @@ import com.epam.coroutinecache.di.actionsModule
 import com.epam.coroutinecache.di.cacheModule
 import com.epam.coroutinecache.utils.JsonFactoryChooser
 import com.epam.coroutinecache.utils.MapperProvider
-import org.junit.*
+import org.junit.After
+import org.junit.Before
+import org.junit.Rule
 import org.junit.rules.TemporaryFolder
 import org.koin.core.parameter.parametersOf
 import org.koin.standalone.StandAloneContext.startKoin

@@ -13,10 +13,21 @@ import java.io.File
 /**
  * Koin modules that contains all instances regarding to cache
  */
-val cacheModule = module (override = true) {
-    single (name = "DiskCache", override = true) { (cacheDirectory: File, mapper: JsonMapper) -> DiskCache(cacheDirectory, mapper) } bind Persistence::class
-    single (name = "MemoryCache") { MemoryCache() } bind Memory::class
-    factory (name = "RecordExpiredChecker") { RecordExpiredChecker() }
-    single (name = "ProxyTranslator") { ProxyTranslator() }
-}
+val cacheModule = module(override = true) {
 
+    single(name = "DiskCache", override = true) { (cacheDirectory: File, mapper: JsonMapper) ->
+        DiskCache(cacheDirectory, mapper)
+    } bind Persistence::class
+
+    single(name = "MemoryCache") {
+        MemoryCache()
+    } bind Memory::class
+
+    factory(name = "RecordExpiredChecker") {
+        RecordExpiredChecker()
+    }
+
+    single(name = "ProxyTranslator") {
+        ProxyTranslator()
+    }
+}

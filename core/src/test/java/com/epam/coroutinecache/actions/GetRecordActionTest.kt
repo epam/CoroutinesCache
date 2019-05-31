@@ -22,7 +22,6 @@ class GetRecordActionTest : BaseTest() {
 
     private val getRecordAction: GetRecordAction by inject { parametersOf(GlobalScope) }
 
-
     @Test
     fun testGetSingleRecordFromMemoryAndPersistence() {
         runBlocking {
@@ -114,15 +113,15 @@ class GetRecordActionTest : BaseTest() {
         }
     }
 
-
     companion object {
         private const val MAX_MB_CACHE_SIZE: Int = 20
         private const val RECORDS_COUNT = 1000
         private const val MAX_RECORDS = 20
         private const val KEY = "DATA_KEY"
-        private const val RECORD_DATA = "Lorem ipsum dolor sit amet, volutpat velit adipiscing ligula lorem tortor mauris, vel ipsum porttitor vivamus nec, nascetur augue." +
-                " Integer ut et, consequat ac urna, pede elementum ut vitae orci." +
-                " Sed lorem sodales nam viverra semper, curabitur suscipit ut suscipit proin lectus facilisis, donec sapien facilisis volutpat, aliquam adipiscing consectetuer mauris neque quam, laoreet in." +
-                " Nunc augue quis per vestibulum, neque curabitur egestas hymenaeos, diam pede. Dolor lacus elit ultricies pellentesque sed. Ante amet ipsum duis sit est integer."
+        private const val RECORD_DATA = "Lorem ipsum dolor sit amet, volutpat velit adipiscing ligula lorem tortor mauris, vel ipsum porttitor " +
+                "vivamus nec, nascetur augue. Integer ut et, consequat ac urna, pede elementum ut vitae orci. Sed lorem sodales nam viverra " +
+                "semper, curabitur suscipit ut suscipit proin lectus facilisis, donec sapien facilisis volutpat, aliquam adipiscing consectetuer " +
+                "mauris neque quam, laoreet in. Nunc augue quis per vestibulum, neque curabitur egestas hymenaeos, diam pede. Dolor lacus elit " +
+                "ultricies pellentesque sed. Ante amet ipsum duis sit est integer."
     }
 }

@@ -1,7 +1,11 @@
 package com.epam.coroutinecache.utils
 
 import com.epam.coroutinecache.annotations.EntryClass
-import java.lang.reflect.*
+import java.lang.reflect.GenericArrayType
+import java.lang.reflect.Modifier
+import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
+import java.lang.reflect.WildcardType
 
 /**
  * Factory methods for types.
@@ -33,7 +37,7 @@ object Types {
     fun arrayOf(componentType: Type): GenericArrayType = GenericArrayTypeImpl(componentType)
 
     fun canonicalize(type: Type): Type {
-        when(type) {
+        when (type) {
             is Class<*> -> {
                 return if (type.isArray) GenericArrayTypeImpl(canonicalize(type.componentType)) else type
             }
@@ -59,7 +63,7 @@ object Types {
             private var ownerType: Type?,
             private var rawType: Type,
             private var typeArguments: Array<Type?>
-    ): ParameterizedType {
+    ) : ParameterizedType {
 
         init {
             if (rawType is Class<*>) {
@@ -79,7 +83,7 @@ object Types {
         override fun getActualTypeArguments(): Array<Type?> = typeArguments.clone()
     }
 
-    private class GenericArrayTypeImpl(private var componentType: Type): GenericArrayType {
+    private class GenericArrayTypeImpl(private var componentType: Type) : GenericArrayType {
 
         init {
             this.componentType = canonicalize(componentType)
@@ -94,7 +98,6 @@ object Types {
      * bound must be Object.class.
      */
     private class WildcardTypeImpl(upperBounds: Array<Type?>, lowerBounds: Array<Type?>) : WildcardType {
-
         private var upperBound: Type?
         private var lowerBound: Type?
 
@@ -107,7 +110,6 @@ object Types {
                 if (upperBounds[0] !== Any::class.java) throw IllegalArgumentException()
                 this.lowerBound = canonicalize(lowerBounds[0]!!)
                 this.upperBound = Any::class.java
-
             } else {
                 if (upperBounds[0] == null) throw NullPointerException()
                 this.lowerBound = null

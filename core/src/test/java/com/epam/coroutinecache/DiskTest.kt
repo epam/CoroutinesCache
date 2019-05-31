@@ -3,12 +3,12 @@ package com.epam.coroutinecache
 import com.epam.coroutinecache.core.Record
 import com.epam.coroutinecache.utils.MockDataString
 import com.epam.coroutinecache.utils.Types
-import org.junit.*
+import org.junit.Assert.assertArrayEquals
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
+import org.junit.Test
 
-import org.junit.Assert.*
-
-class DiskTest: BaseTest() {
-
+class DiskTest : BaseTest() {
 
     @Test
     fun testRetrieveRecordAsObject() {
@@ -81,8 +81,10 @@ class DiskTest: BaseTest() {
 
     @Test
     fun testRetrieveTwoLevelList() {
-        val inputList = listOf(listOf(MockDataString(VALUE_STRING), MockDataString(VALUE_STRING + 1)), listOf(MockDataString(VALUE_STRING + 2), MockDataString(VALUE_STRING + 3)))
-        val inputType = Types.newParameterizedType(List::class.java, Types.newParameterizedType(List::class.java, MockDataString::class.java))
+        val inputList = listOf(listOf(MockDataString(VALUE_STRING), MockDataString(VALUE_STRING + 1)),
+                listOf(MockDataString(VALUE_STRING + 2), MockDataString(VALUE_STRING + 3)))
+        val inputType = Types.newParameterizedType(List::class.java,
+                Types.newParameterizedType(List::class.java, MockDataString::class.java))
         diskCache.saveRecord(KEY, Record(inputList), inputType)
 
         val retrievedData = diskCache.getRecord<List<List<MockDataString>>>(KEY, inputType)
