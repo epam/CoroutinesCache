@@ -32,7 +32,7 @@ class SaveRecordAction(
         memory.saveRecord(key, record)
 
         if (diskCache.storedMB() >= maxMbCacheSize) {
-            System.out.println("Record can not be persisted because it would exceed the max limit megabytes settled down")
+            println("Record can not be persisted because it would exceed the max limit megabytes settled down")
         } else {
             diskCache.saveRecord(key, record, entryType)
         }

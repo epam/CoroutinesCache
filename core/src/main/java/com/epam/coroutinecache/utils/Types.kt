@@ -13,12 +13,12 @@ object Types {
     fun obtainTypeFromAnnotation(annotation: EntryClass): Type {
         return if (annotation.typeParams.isEmpty()) {
             if (annotation.rawType.javaObjectType.isArray) {
-                Types.arrayOf(annotation.rawType.javaObjectType)
+                arrayOf(annotation.rawType.javaObjectType)
             } else {
                 annotation.rawType.javaObjectType
             }
         } else {
-            Types.newParameterizedType(annotation.rawType.javaObjectType, *annotation.typeParams.map { obtainTypeFromAnnotation(it) }.toTypedArray())
+            newParameterizedType(annotation.rawType.javaObjectType, *annotation.typeParams.map { obtainTypeFromAnnotation(it) }.toTypedArray())
         }
     }
 
