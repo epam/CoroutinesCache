@@ -7,7 +7,7 @@ import java.lang.Exception
 import java.lang.reflect.Type
 
 class DiskCache(
-        external val cacheDirectory: File,
+        private external val cacheDirectory: File,
         private val jsonMapper: JsonMapper
 ): Persistence {
 
