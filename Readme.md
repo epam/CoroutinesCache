@@ -33,7 +33,7 @@ allprojects {
 Grab via Gradle:
 
 ```kotlin
-  implementation 'com.epam.coroutinecache:coroutinecache:0.9.1'
+  implementation 'com.epam.coroutinecache:coroutinecache:0.9.2'
 ```
 or Maven:
 
