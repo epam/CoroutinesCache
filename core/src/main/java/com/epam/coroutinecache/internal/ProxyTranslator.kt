@@ -20,6 +20,7 @@ class ProxyTranslator {
 
     private val cacheObjectParamsMap: MutableMap<Method, CacheObjectParams> = HashMap()
 
+    @Suppress("ReturnCount")
     fun processMethod(method: Method?, methodArgs: Array<out Any>?): CacheObjectParams? {
         if (method == null) {
             return null
@@ -45,7 +46,6 @@ class ProxyTranslator {
         return cacheObjectParams
     }
 
-
     private fun getMethodLifeTime(method: Method): Pair<Long, TimeUnit>? {
         val lifeTimeAnnotation = method.getAnnotation(LifeTime::class.java) ?: return null
         return Pair(lifeTimeAnnotation.value, lifeTimeAnnotation.unit)
@@ -66,7 +66,6 @@ class ProxyTranslator {
         return annotation.key
     }
 
-
     private fun getMethodType(method: Method): Type {
         val providerAnnotation = method.getAnnotation(ProviderKey::class.java)
         return Types.obtainTypeFromAnnotation(providerAnnotation.entryClass)
@@ -84,7 +83,7 @@ class ProxyTranslator {
         var expectedObject: T? = null
 
         for (objectParam in methodArgs) {
-            if (expectedClass.isAssignableFrom(objectParam!!::class.java)) {
+            if (expectedClass.isAssignableFrom(objectParam::class.java)) {
                 expectedObject = objectParam as T
                 ++countSameObjectsType
             }
@@ -96,5 +95,4 @@ class ProxyTranslator {
 
         return expectedObject
     }
-
 }

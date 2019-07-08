@@ -7,13 +7,13 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 
-class Repository (
-        private val cacheDirectory: File
+class Repository(
+        cacheDirectory: File
 ) {
 
-    private val coroutinesCache: CoroutinesCache = CoroutinesCache(CacheParams(10, GsonMapper(), cacheDirectory))
+    private val coroutinesCache: CoroutinesCache = CoroutinesCache(CacheParams(MAX_CACHE_SIZE_MB, GsonMapper(), cacheDirectory))
 
-    private val restApi: RestApi = Retrofit.Builder ()
+    private val restApi: RestApi = Retrofit.Builder()
             .baseUrl("https://jsonplaceholder.typicode.com")
             .addConverterFactory(GsonConverterFactory.create())
             .build().create(RestApi::class.java)
@@ -21,4 +21,8 @@ class Repository (
     private val cacheProviders: CacheProviders = coroutinesCache.using(CacheProviders::class.java)
 
     suspend fun getData(): Data = cacheProviders.getData(restApi::getData)
+
+    companion object {
+        private const val MAX_CACHE_SIZE_MB = 10
+    }
 }

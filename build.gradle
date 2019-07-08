@@ -2,20 +2,27 @@
 
 project.ext.set("versionName", "0.9.0")
 
+apply from: 'ktlint.gradle'
+
 buildscript {
-    ext.kotlin_version = '1.3.10'
+    ext.kotlin_version = '1.3.31'
     ext.dokka_version = '0.9.17'
     ext.bintray_version = '0.9'
+    ext.detektVersion = '1.0.0-RC14' // https://plugins.gradle.org/plugin/io.gitlab.arturbosch.detekt
+
     repositories {
         google()
         jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.android.tools.build:gradle:3.4.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:${dokka_version}"
         classpath "com.novoda:bintray-release:${bintray_version}"
-
+        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detektVersion"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -28,6 +35,22 @@ allprojects {
         jcenter()
 
         maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    }
+}
+
+subprojects {
+    apply plugin: 'io.gitlab.arturbosch.detekt'
+
+    detekt {
+        toolVersion = rootProject.ext.detektVersion
+        input = files("$projectDir")
+        filters = ".*/resources/.*,.*/build/.*,.*Test.kt"
+        config = files("$rootDir/detekt-config.yml")
+        reports {
+            xml.enabled = false
+            html.enabled = true
+            html.destination = file("$buildDir/reports/detekt.html")
+        }
     }
 }
 

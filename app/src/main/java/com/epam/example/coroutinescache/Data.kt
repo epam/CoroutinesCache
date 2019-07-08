@@ -1,6 +1,6 @@
 package com.epam.example.coroutinescache
 
-data class Data (
+data class Data(
         val userId: String,
         val id: String,
         val title: String,

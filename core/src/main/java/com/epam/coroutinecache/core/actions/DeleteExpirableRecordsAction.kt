@@ -54,5 +54,4 @@ class DeleteExpirableRecordsAction(
         private const val PERCENTAGE_MEMORY_STORED_TO_START = 0.95f
         private const val PERCENTAGE_MEMORY_STORED_TO_STOP = 0.7f
     }
-
 }

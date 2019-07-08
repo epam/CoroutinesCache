@@ -2,7 +2,6 @@ package com.epam.coroutinecache.core
 
 import java.lang.reflect.Type
 
-
 /**
  * Provides the persistence layer for the cache A default implementation which store the objects in
  * disk is supplied:

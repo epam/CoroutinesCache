@@ -1,7 +1,11 @@
 package com.epam.coroutinecache.utils
 
 import com.epam.coroutinecache.annotations.EntryClass
-import java.lang.reflect.*
+import java.lang.reflect.GenericArrayType
+import java.lang.reflect.Modifier
+import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
+import java.lang.reflect.WildcardType
 
 /**
  * Factory methods for types.
@@ -13,18 +17,20 @@ object Types {
     fun obtainTypeFromAnnotation(annotation: EntryClass): Type {
         return if (annotation.typeParams.isEmpty()) {
             if (annotation.rawType.javaObjectType.isArray) {
-                Types.arrayOf(annotation.rawType.javaObjectType)
+                arrayOf(annotation.rawType.javaObjectType)
             } else {
                 annotation.rawType.javaObjectType
             }
         } else {
-            Types.newParameterizedType(annotation.rawType.javaObjectType, *annotation.typeParams.map { obtainTypeFromAnnotation(it) }.toTypedArray())
+            @Suppress("SpreadOperator")
+            newParameterizedType(annotation.rawType.javaObjectType, *annotation.typeParams.map { obtainTypeFromAnnotation(it) }.toTypedArray())
         }
     }
 
     /**
      * Returns a new parameterized type, applying {@code typeArguments} to {@code rawType}.
      */
+    @Suppress("SpreadOperator")
     fun newParameterizedType(rawType: Type, vararg types: Type): ParameterizedType = ParameterizedTypeImpl(null, rawType, arrayOf(*types))
 
     /**
@@ -33,33 +39,29 @@ object Types {
     fun arrayOf(componentType: Type): GenericArrayType = GenericArrayTypeImpl(componentType)
 
     fun canonicalize(type: Type): Type {
-        when(type) {
+        var result = type
+        when (type) {
             is Class<*> -> {
-                return if (type.isArray) GenericArrayTypeImpl(canonicalize(type.componentType)) else type
+                if (type.isArray) result = GenericArrayTypeImpl(canonicalize(type.componentType))
             }
             is ParameterizedType -> {
-                if (type is ParameterizedTypeImpl) return type
-                return ParameterizedTypeImpl(type.ownerType, type.rawType, type.actualTypeArguments)
+                if (type !is ParameterizedTypeImpl) result = ParameterizedTypeImpl(type.ownerType, type.rawType, type.actualTypeArguments)
             }
             is GenericArrayType -> {
-                if (type is GenericArrayTypeImpl) return type
-                return GenericArrayTypeImpl(type.genericComponentType)
+                if (type !is GenericArrayTypeImpl) result = GenericArrayTypeImpl(type.genericComponentType)
             }
             is WildcardType -> {
-                if (type is WildcardTypeImpl) return type
-                return WildcardTypeImpl(type.upperBounds, type.lowerBounds)
-            }
-            else -> {
-                return type
+                if (type !is WildcardTypeImpl) result = WildcardTypeImpl(type.upperBounds, type.lowerBounds)
             }
         }
+        return result
     }
 
     private class ParameterizedTypeImpl(
             private var ownerType: Type?,
             private var rawType: Type,
             private var typeArguments: Array<Type?>
-    ): ParameterizedType {
+    ) : ParameterizedType {
 
         init {
             if (rawType is Class<*>) {
@@ -79,7 +81,7 @@ object Types {
         override fun getActualTypeArguments(): Array<Type?> = typeArguments.clone()
     }
 
-    private class GenericArrayTypeImpl(private var componentType: Type): GenericArrayType {
+    private class GenericArrayTypeImpl(private var componentType: Type) : GenericArrayType {
 
         init {
             this.componentType = canonicalize(componentType)
@@ -94,7 +96,6 @@ object Types {
      * bound must be Object.class.
      */
     private class WildcardTypeImpl(upperBounds: Array<Type?>, lowerBounds: Array<Type?>) : WildcardType {
-
         private var upperBound: Type?
         private var lowerBound: Type?
 
@@ -107,7 +108,6 @@ object Types {
                 if (upperBounds[0] !== Any::class.java) throw IllegalArgumentException()
                 this.lowerBound = canonicalize(lowerBounds[0]!!)
                 this.upperBound = Any::class.java
-
             } else {
                 if (upperBounds[0] == null) throw NullPointerException()
                 this.lowerBound = null
