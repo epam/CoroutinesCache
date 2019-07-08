@@ -3,9 +3,9 @@ package com.epam.coroutinecache.actions
 import com.epam.coroutinecache.BaseTest
 import com.epam.coroutinecache.core.Record
 import com.epam.coroutinecache.core.actions.DeleteRecordAction
-import junit.framework.Assert.assertTrue
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.runBlocking
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.koin.core.parameter.parametersOf
 import org.koin.standalone.inject
