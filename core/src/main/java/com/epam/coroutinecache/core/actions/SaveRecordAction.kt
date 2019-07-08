@@ -18,13 +18,14 @@ class SaveRecordAction(
         private val memory: Memory,
         private val maxMbCacheSize: Int,
         private val scope: CoroutineScope
-): KoinComponent {
+) : KoinComponent {
 
     private val deleteExpirableRecordsAction: DeleteExpirableRecordsAction by inject { parametersOf(maxMbCacheSize, scope) }
 
     /**
      * Async function that saves data in the cache and memory. After saving delete all expirable data from cache
-     * if memory limit is reached. If memory limit is reached, bot there is nothing to delete from cache, then print message that record can't be saved
+     * if memory limit is reached. If memory limit is reached, bot there is nothing to delete from cache,
+     * then print message that record can't be saved
      */
     suspend fun save(key: String, data: Any?, entryType: Type, lifeTimeMillis: Long = 0, isExpirable: Boolean = true) = scope.async {
         val record = Record(data, isExpirable, lifeTimeMillis)

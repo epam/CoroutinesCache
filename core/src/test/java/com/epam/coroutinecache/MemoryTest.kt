@@ -6,7 +6,7 @@ import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
 import org.junit.Test
 
-class MemoryTest: BaseTest() {
+class MemoryTest : BaseTest() {
 
     @Test
     fun testSaveAndRetrieveData() {

@@ -30,4 +30,4 @@ licenses:
   - 'google-gdk-license-.+'
 
 script:
-  - ./gradlew build check
+  - ./gradlew ktlint detekt build check

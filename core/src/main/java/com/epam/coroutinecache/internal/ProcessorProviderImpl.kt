@@ -29,7 +29,13 @@ class ProcessorProviderImpl(
         return if (record == null) {
             deleteRecordAction.deleteByKey(cacheObjectParams.key)
             val data = cacheObjectParams.loaderFun?.callSuspend() as T?
-            saveRecordAction.save(cacheObjectParams.key, data, cacheObjectParams.entryType!!, cacheObjectParams.timeUnit.toMillis(cacheObjectParams.lifeTime), cacheObjectParams.isExpirable).await()
+            saveRecordAction
+                    .save(cacheObjectParams.key,
+                            data,
+                            cacheObjectParams.entryType!!,
+                            cacheObjectParams.timeUnit.toMillis(cacheObjectParams.lifeTime),
+                            cacheObjectParams.isExpirable)
+                    .await()
             CacheLog.logMessage("Got data from source: ${Source.CLOUD}")
             data
         } else {
@@ -41,5 +47,4 @@ class ProcessorProviderImpl(
     override suspend fun deleteAll() {
         deleteRecordAction.deleteAll()
     }
-
 }
