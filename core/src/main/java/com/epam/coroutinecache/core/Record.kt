@@ -14,14 +14,10 @@ class Record<T>(
         private var lifeTimeMillis: Long = 0
 ) {
     private var source: Source = Source.MEMORY
-    private var timeAtWhichWasPersisted: Long = 0
+    private val timeAtWhichWasPersisted: Long = System.currentTimeMillis()
 
     @Transient
     var sizeOnMb: Float = 0.0f
-
-    init {
-        this.timeAtWhichWasPersisted = System.currentTimeMillis()
-    }
 
     fun setSource(source: Source) {
         this.source = source
