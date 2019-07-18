@@ -30,7 +30,6 @@ interface Memory {
      */
     fun deleteByKey(key: String)
 
-
     /**
      * Clear all cached data
      */

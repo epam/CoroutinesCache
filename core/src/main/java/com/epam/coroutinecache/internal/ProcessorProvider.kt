@@ -14,5 +14,4 @@ interface ProcessorProvider {
      * Destroy the entire cache
      */
     suspend fun deleteAll()
-
 }

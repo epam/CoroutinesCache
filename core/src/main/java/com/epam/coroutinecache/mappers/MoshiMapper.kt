@@ -10,7 +10,7 @@ import java.lang.reflect.Type
 
 class MoshiMapper(
         private val moshi: Moshi = Moshi.Builder().build()
-): JsonMapper {
+) : JsonMapper {
 
     override fun toJson(src: Any, typeOfSrc: Type): String {
         val jsonAdapter = moshi.adapter<Any>(typeOfSrc)
@@ -28,5 +28,7 @@ class MoshiMapper(
         return jsonAdapter.fromJson(JsonReader.of(bufferedSource))
     }
 
-    override fun newParameterizedType(rawType: Type, vararg typeArguments: Type): ParameterizedType = Types.newParameterizedType(rawType, *typeArguments)
+    @Suppress("SpreadOperator")
+    override fun newParameterizedType(rawType: Type, vararg typeArguments: Type): ParameterizedType =
+            Types.newParameterizedType(rawType, *typeArguments)
 }

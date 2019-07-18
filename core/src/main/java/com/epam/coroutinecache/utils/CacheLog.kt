@@ -1,8 +1,9 @@
 package com.epam.coroutinecache.utils
 
+@Suppress("ConstantConditionIf")
 object CacheLog {
 
-    private val logsEnabled = false
+    private const val logsEnabled = false
 
     fun logMessage(message: String) {
         if (logsEnabled) {

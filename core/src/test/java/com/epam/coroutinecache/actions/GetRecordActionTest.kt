@@ -7,11 +7,11 @@ import com.epam.coroutinecache.core.actions.GetRecordAction
 import com.epam.coroutinecache.core.actions.SaveRecordAction
 import com.epam.coroutinecache.utils.MockDataString
 import com.epam.coroutinecache.utils.Types
-import junit.framework.Assert.assertTrue
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.koin.core.parameter.parametersOf
 import org.koin.standalone.inject
@@ -22,13 +22,12 @@ class GetRecordActionTest : BaseTest() {
 
     private val getRecordAction: GetRecordAction by inject { parametersOf(GlobalScope) }
 
-
     @Test
     fun testGetSingleRecordFromMemoryAndPersistence() {
         runBlocking {
             val savingData = createMockList()
             val dataType = Types.newParameterizedType(List::class.java, MockDataString::class.java)
-            saveRecordAction.save(KEY, savingData, dataType)
+            saveRecordAction.save(KEY, savingData, dataType).await()
 
             var retrievedData: Record<Any>? = getRecordAction.getRecord(KEY, dataType)
             checkRetrievedDataIsCorrect(Source.MEMORY, savingData, retrievedData)
@@ -46,7 +45,7 @@ class GetRecordActionTest : BaseTest() {
             val savingData = createMockList()
             val savingType = Types.newParameterizedType(List::class.java, MockDataString::class.java)
             for (i in 0 until MAX_RECORDS) {
-                saveRecordAction.save(KEY + i, savingData, savingType)
+                saveRecordAction.save(KEY + i, savingData, savingType).await()
             }
             for (i in 0 until MAX_RECORDS) {
                 val retrievedData: Record<Any>? = getRecordAction.getRecord(KEY + i, savingType)
@@ -65,7 +64,7 @@ class GetRecordActionTest : BaseTest() {
         runBlocking {
             val savingData = createMockList()
             val savingType = Types.newParameterizedType(List::class.java, MockDataString::class.java)
-            saveRecordAction.save(KEY, savingData, savingType, 1000)
+            saveRecordAction.save(KEY, savingData, savingType, 1000).await()
 
             delay(1500)
 
@@ -82,7 +81,7 @@ class GetRecordActionTest : BaseTest() {
         runBlocking {
             val savingData = createMockList()
             val savingType = Types.newParameterizedType(List::class.java, MockDataString::class.java)
-            saveRecordAction.save(KEY, savingData, savingType, 1000)
+            saveRecordAction.save(KEY, savingData, savingType, 1000).await()
 
             delay(1500)
             memory.deleteByKey(KEY)
@@ -114,15 +113,15 @@ class GetRecordActionTest : BaseTest() {
         }
     }
 
-
     companion object {
         private const val MAX_MB_CACHE_SIZE: Int = 20
         private const val RECORDS_COUNT = 1000
         private const val MAX_RECORDS = 20
         private const val KEY = "DATA_KEY"
-        private const val RECORD_DATA = "Lorem ipsum dolor sit amet, volutpat velit adipiscing ligula lorem tortor mauris, vel ipsum porttitor vivamus nec, nascetur augue." +
-                " Integer ut et, consequat ac urna, pede elementum ut vitae orci." +
-                " Sed lorem sodales nam viverra semper, curabitur suscipit ut suscipit proin lectus facilisis, donec sapien facilisis volutpat, aliquam adipiscing consectetuer mauris neque quam, laoreet in." +
-                " Nunc augue quis per vestibulum, neque curabitur egestas hymenaeos, diam pede. Dolor lacus elit ultricies pellentesque sed. Ante amet ipsum duis sit est integer."
+        private const val RECORD_DATA = "Lorem ipsum dolor sit amet, volutpat velit adipiscing ligula lorem tortor mauris, vel ipsum porttitor " +
+                "vivamus nec, nascetur augue. Integer ut et, consequat ac urna, pede elementum ut vitae orci. Sed lorem sodales nam viverra " +
+                "semper, curabitur suscipit ut suscipit proin lectus facilisis, donec sapien facilisis volutpat, aliquam adipiscing consectetuer " +
+                "mauris neque quam, laoreet in. Nunc augue quis per vestibulum, neque curabitur egestas hymenaeos, diam pede. Dolor lacus elit " +
+                "ultricies pellentesque sed. Ante amet ipsum duis sit est integer."
     }
 }

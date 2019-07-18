@@ -10,7 +10,7 @@ import java.lang.reflect.Type
 
 class GsonMapper(
         private val gson: Gson = Gson()
-): JsonMapper {
+) : JsonMapper {
 
     override fun toJson(src: Any, typeOfSrc: Type): String = gson.toJson(src, typeOfSrc)
 
@@ -23,5 +23,7 @@ class GsonMapper(
         return objectValue
     }
 
-    override fun newParameterizedType(rawType: Type, vararg typeArguments: Type): ParameterizedType = Types.newParameterizedType(rawType, *typeArguments)
+    @Suppress("SpreadOperator")
+    override fun newParameterizedType(rawType: Type, vararg typeArguments: Type): ParameterizedType =
+            Types.newParameterizedType(rawType, *typeArguments)
 }

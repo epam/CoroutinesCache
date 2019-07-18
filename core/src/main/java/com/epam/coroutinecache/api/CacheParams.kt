@@ -2,7 +2,6 @@ package com.epam.coroutinecache.api
 
 import com.epam.coroutinecache.mappers.JsonMapper
 import java.io.File
-import java.lang.IllegalArgumentException
 
 /**
  * Class contains params for CoroutinesCache. Cache directory should exists and has a write permissions.
@@ -11,7 +10,7 @@ import java.lang.IllegalArgumentException
  * @param mapper - JsonMapper. One of implementation JsonMapper interface that will be used for serialization data
  * @param directory - File. Directory, where cache files will be stored
  */
-data class CacheParams (
+data class CacheParams(
         val maxPersistenceCacheMB: Int,
         val mapper: JsonMapper,
         val directory: File

@@ -33,7 +33,7 @@ allprojects {
 Grab via Gradle:
 
 ```kotlin
-  implementation 'com.epam.coroutinecache:coroutinecache:0.9.1'
+  implementation 'com.epam.coroutinecache:coroutinecache:0.9.2'
 ```
 or Maven:
 
@@ -70,7 +70,7 @@ class CacheParams (maxPersistenceCacheMB: Int, mapper: JsonMapper, directory: Fi
 
 Next step you need to create an interface with functions that will describe data, which should be stored. For each function you can add params by next annotations:
 
-1. `@ProviderKey(key: String)` - **key** that will be used for saving data
+1. `@ProviderKey(key: String, entryClass: EntryClass)` - **key** that will be used for saving data, **entryClass** it is an another annotation `@EntryClass(rawType: KClass<*>, vararg typeParams: EntryClass = [])` that used to specify value's type needed for serialization/deserialization (to avoid obtaining type through reflection). **typeParams** used when you need parameterized type, such annotation for list should looks like: `EntryClass(List::class, EntryClass(Data::class))`
 2. `@LifeTime(value: Long, timeUnit: TimeUnit)` - **value** describes how long record should be stored in memory or persistence. If this annotation isn't set, record will be stored without time limit
 3. `@Expirable` - Set **expirable** param to true. If this annotation isn't set it means that record could be deleted from persistence, even it hasn't reached life limit in persistence low memory case.
 4. `@UseIfExpired` - If this annotation is set it means that data will be retrieved from cache even if record reached its lifetime. Could be used only once, after getting, record will be deleted from cache.
@@ -83,7 +83,7 @@ To connect interface and CoroutinesCache and your interface just call `Coroutine
 **CacheProviders**
 ```kotlin
 interface CacheProviders {
-    @ProviderKey("TestKey")
+    @ProviderKey("TestKey", EntryClass(Data::class))
     @LifeTime(value = 1L, unit = TimeUnit.MINUTES)
     @Expirable
     @UseIfExpired

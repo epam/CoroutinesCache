@@ -1,0 +1,29 @@
+configurations {
+    ktlint
+}
+
+task ktlint(type: JavaExec, group: LifecycleBasePlugin.VERIFICATION_GROUP) {
+    description = "Check Kotlin code style."
+    classpath = configurations.ktlint
+    main = 'com.pinterest.ktlint.Main'
+    args '--android',
+            'app/src/**/*.kt',
+            'core/src/**/*.kt',
+            '--reporter=plain',
+            "--reporter=checkstyle,output=$buildDir/reports/ktlint-checkstyle.xml"
+}
+
+task ktlintFormat(type: JavaExec, group: 'formatting') {
+    description = 'Fix Kotlin code style deviations.'
+    classpath = configurations.ktlint
+    main = 'com.pinterest.ktlint.Main'
+    args '--android', '-F',
+            'app/src/**/*.kt',
+            'core/src/**/*.kt'
+}
+
+ext.ktlint_version = '0.33.0' // https://github.com/pinterest/ktlint/releases
+
+dependencies {
+    ktlint "com.pinterest:ktlint:$ktlint_version"
+}
