@@ -2,6 +2,7 @@ package com.epam.example.coroutinescache
 
 import com.epam.coroutinecache.api.CacheParams
 import com.epam.coroutinecache.api.CoroutinesCache
+import com.epam.coroutinecache.api.DataProvider
 import com.epam.coroutinecache.mappers.GsonMapper
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -20,7 +21,13 @@ class Repository(
 
     private val cacheProviders: CacheProviders = coroutinesCache.using(CacheProviders::class.java)
 
-    suspend fun getData(): Data = cacheProviders.getData(restApi::getData)
+    suspend fun getData(search: String): Data = cacheProviders.getData(DataProviderImpl(search))
+
+    private inner class DataProviderImpl(private val search: String) : DataProvider<Data> {
+        override suspend fun getData(): Data = restApi.getData()
+
+        override fun parameterizeKey(baseKey: String): String = "${baseKey}_$search"
+    }
 
     companion object {
         private const val MAX_CACHE_SIZE_MB = 10
