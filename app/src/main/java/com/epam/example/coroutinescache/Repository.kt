@@ -23,7 +23,7 @@ class Repository(
 
     suspend fun getData(): Data = cacheProviders.getData(restApi::getData)
 
-    suspend fun getParameterizedData(search: String): Data = cacheProviders.getParametrizedData(DataProviderImpl(search))
+    suspend fun getParameterizedData(search: String): Data = cacheProviders.getParameterizedData(DataProviderImpl(search))
 
     private inner class DataProviderImpl(private val search: String) : ParameterizedDataProvider<Data> {
 

@@ -20,5 +20,5 @@ interface CacheProviders {
     @LifeTime(value = 1L, unit = TimeUnit.MINUTES)
     @Expirable
     @UseIfExpired
-    suspend fun getParametrizedData(provider: ParameterizedDataProvider<Data>): Data
+    suspend fun getParameterizedData(provider: ParameterizedDataProvider<Data>): Data
 }
