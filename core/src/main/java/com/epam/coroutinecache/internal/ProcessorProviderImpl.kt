@@ -10,7 +10,6 @@ import kotlinx.coroutines.CoroutineScope
 import org.koin.core.parameter.parametersOf
 import org.koin.standalone.KoinComponent
 import org.koin.standalone.inject
-import kotlin.reflect.full.callSuspend
 
 class ProcessorProviderImpl(
         private val cacheParams: CacheParams,
@@ -28,7 +27,7 @@ class ProcessorProviderImpl(
         val record = getRecordAction.getRecord<T>(cacheObjectParams.key, cacheObjectParams.entryType!!, cacheObjectParams.useIfExpired)
         return if (record == null) {
             deleteRecordAction.deleteByKey(cacheObjectParams.key)
-            val data = cacheObjectParams.loaderFun?.callSuspend() as T?
+            val data = cacheObjectParams.dataProvider?.getData() as T?
             saveRecordAction
                     .save(cacheObjectParams.key,
                             data,
