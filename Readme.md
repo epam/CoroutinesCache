@@ -33,7 +33,7 @@ allprojects {
 Grab via Gradle:
 
 ```kotlin
-  implementation 'com.epam.coroutinecache:coroutinecache:0.9.1'
+  implementation 'com.epam.coroutinecache:coroutinecache:0.9.2'
 ```
 or Maven:
 
@@ -41,7 +41,7 @@ or Maven:
   <dependency>
     <groupId>com.epam.coroutinecache</groupId>
     <artifactId>coroutinecache</artifactId>
-    <version>0.9.0</version>
+    <version>0.9.2</version>
     <type>pom</type>
   </dependency>
 ```
@@ -75,10 +75,11 @@ Next step you need to create an interface with functions that will describe data
 3. `@Expirable` - Set **expirable** param to true. If this annotation isn't set it means that record could be deleted from persistence, even it hasn't reached life limit in persistence low memory case.
 4. `@UseIfExpired` - If this annotation is set it means that data will be retrieved from cache even if record reached its lifetime. Could be used only once, after getting, record will be deleted from cache.
 
-**Note:** Each method should be a suspend function containing only one param that is also a suspend function without params that returns type **T**. It's result will be stored in the cache. And function's return value also should be **<T>**
+**Note:** In cases when data can be requested without any parameters you may use a method that should be a suspend function containing only one param that is also a suspend function without params that returns type **T**. It's result will be stored in the cache. And function's return value also should be **<T>**
+In case, when you data request call requires some parameters and also you want to store data with different keys that depend on call parameters, then you should use a suspend method that takes an implementation of `ParameterizedDataProvider` interface. In that case data will be stored under modified key that is controlled by your implementation of `parameterizeKey` method.
 
 To connect interface and CoroutinesCache and your interface just call `CoroutinesCache.using(YourInterface::class.java)`. This method will return interface instance. To save and get data from cache just call methods from returned instance of your interface.
-## Example 
+## Example 1 (no parameters)
 
 **CacheProviders**
 ```kotlin
@@ -110,6 +111,51 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         GlobalScope.launch (Dispatchers.Main) {
             val data = persistence.getData()
+            messageView.text = data.toString()
+        }
+    }
+}
+````
+
+## Example 2 (with parameters)
+
+**CacheProviders**
+```kotlin
+interface CacheProviders {
+    @ProviderKey("BaseKey", EntryClass(Data::class))
+    @LifeTime(value = 1L, unit = TimeUnit.MINUTES)
+    @Expirable
+    @UseIfExpired
+    suspend fun getParameterizedData(provider: ParameterizedDataProvider<Data>): Data
+}
+```
+
+**Repository**
+```kotlin
+class Repository (private val cacheDirectory: File) {
+     private val coroutinesCache = CoroutinesCache(CacheParams(10, GsonMapper(), cacheDirectory))
+     private val restApi = Retrofit...create(RestApi::class.java)
+     private val cacheProviders = coroutinesCache.using(CacheProviders::class.java)
+
+     suspend fun getParametrizedData(search: String): Data = cacheProviders.getParameterizedData(DataProviderImpl())
+
+     private inner class DataProviderImpl(private val search: String) : ParameterizedDataProvider<Data> {
+
+          override suspend fun getData(): Data = restApi.getParameterizedData(search)
+
+          override fun parameterizeKey(baseKey: String): String = "${baseKey}_$search"
+     }
+}
+```
+**MainActivity**
+```kotlin
+class MainActivity : AppCompatActivity() {
+    private val persistence by lazy { Repository(cacheDir) }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        GlobalScope.launch (Dispatchers.Main) {
+            val data = persistence.getParameterizedData("Hello world!")
             messageView.text = data.toString()
         }
     }

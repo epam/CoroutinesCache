@@ -1,12 +1,12 @@
 package com.epam.coroutinecache.internal
 
-import com.epam.coroutinecache.utils.Types
 import com.epam.coroutinecache.annotations.Expirable
 import com.epam.coroutinecache.annotations.LifeTime
 import com.epam.coroutinecache.annotations.ProviderKey
 import com.epam.coroutinecache.annotations.UseIfExpired
-import java.lang.IllegalArgumentException
-import java.lang.IllegalStateException
+import com.epam.coroutinecache.api.ParameterizedDataProvider
+import com.epam.coroutinecache.utils.NoParamsDataProvider
+import com.epam.coroutinecache.utils.Types
 import java.lang.reflect.Method
 import java.lang.reflect.Type
 import java.util.concurrent.TimeUnit
@@ -37,8 +37,9 @@ class ProxyTranslator {
         }
         cacheObjectParams.isExpirable = isMethodExpirable(method)
         cacheObjectParams.useIfExpired = useMethodIfExpired(method)
-        cacheObjectParams.key = getMethodKey(method)
-        cacheObjectParams.loaderFun = getDataSuspend(method, methodArgs)
+        cacheObjectParams.dataProvider = getDataSuspend(method, methodArgs)
+        val baseKey = getMethodKey(method)
+        cacheObjectParams.key = cacheObjectParams.dataProvider?.parameterizeKey(baseKey) ?: baseKey
         cacheObjectParams.entryType = getMethodType(method)
 
         cacheObjectParamsMap[method] = cacheObjectParams
@@ -62,7 +63,8 @@ class ProxyTranslator {
     }
 
     private fun getMethodKey(method: Method): String {
-        val annotation = method.getAnnotation(ProviderKey::class.java) ?: return method.name + method.declaringClass + method.returnType
+        val annotation = method.getAnnotation(ProviderKey::class.java)
+                ?: return method.name + method.declaringClass + method.returnType
         return annotation.key
     }
 
@@ -71,10 +73,15 @@ class ProxyTranslator {
         return Types.obtainTypeFromAnnotation(providerAnnotation.entryClass)
     }
 
-    private fun getDataSuspend(method: Method, methodArgs: Array<out Any>?): KCallable<*> {
-        val dataProvider: KCallable<*>? = getObjectFromMethodParam(method, KCallable::class.java, methodArgs)
-        if (dataProvider == null || !dataProvider.isSuspend) throw IllegalStateException("${method.name} requires an suspend instance")
-        return dataProvider
+    private fun getDataSuspend(method: Method, methodArgs: Array<out Any>?): ParameterizedDataProvider<*> {
+        val dataProvider = getObjectFromMethodParam(method, ParameterizedDataProvider::class.java, methodArgs)
+        if (dataProvider != null) {
+            return dataProvider
+        }
+        val callable = getObjectFromMethodParam(method, KCallable::class.java, methodArgs)
+        if (callable == null || !callable.isSuspend)
+            throw IllegalStateException("${method.name} requires a ParameterizedDataProvider implementation or parameterless suspend function")
+        return NoParamsDataProvider(callable)
     }
 
     private fun <T> getObjectFromMethodParam(method: Method, expectedClass: Class<T>, methodArgs: Array<out Any>?): T? {
