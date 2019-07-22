@@ -3,11 +3,18 @@ package com.epam.example.coroutinescache
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.coroutines.CoroutineContext
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CoroutineScope {
+
+    override val coroutineContext: CoroutineContext
+        get() = SupervisorJob()
 
     private val persistence by lazy { Repository(cacheDir) }
 
@@ -18,9 +25,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onClick() {
-        GlobalScope.launch(Dispatchers.Main) {
-            val data = persistence.getParameterizedData("1234")
-            messageView.text = data.toString()
+        launch(Main) {
+            val data = withContext(IO) { persistence.getParameterizedData("1234") }
+            val result = data.toString()
+            messageView.text = result
         }
     }
 }

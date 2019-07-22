@@ -5,7 +5,7 @@ import com.epam.coroutinecache.di.cacheModule
 import com.epam.coroutinecache.internal.ProxyProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
-import org.koin.standalone.StandAloneContext.loadKoinModules
+import org.koin.core.context.loadKoinModules
 import java.lang.reflect.Proxy
 
 /**
@@ -22,7 +22,7 @@ class CoroutinesCache(
     private lateinit var proxyProvider: ProxyProvider
 
     init {
-        loadKoinModules(arrayListOf(cacheModule, actionsModule))
+        loadKoinModules(listOf(cacheModule, actionsModule))
     }
 
     /**
