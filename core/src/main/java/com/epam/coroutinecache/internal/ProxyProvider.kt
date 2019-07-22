@@ -4,11 +4,11 @@ import com.epam.coroutinecache.api.CacheParams
 import com.epam.coroutinecache.core.Persistence
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.koin.core.KoinComponent
+import org.koin.core.get
+import org.koin.core.inject
 import kotlin.coroutines.intrinsics.COROUTINE_SUSPENDED
 import org.koin.core.parameter.parametersOf
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.get
-import org.koin.standalone.inject
 import java.lang.reflect.InvocationHandler
 import java.lang.reflect.Method
 import kotlin.coroutines.Continuation

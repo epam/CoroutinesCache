@@ -7,7 +7,9 @@ import com.epam.coroutinecache.core.Persistence
 import com.epam.coroutinecache.internal.ProxyTranslator
 import com.epam.coroutinecache.internal.RecordExpiredChecker
 import com.epam.coroutinecache.mappers.JsonMapper
-import org.koin.dsl.module.module
+import org.koin.core.qualifier.StringQualifier
+import org.koin.dsl.bind
+import org.koin.dsl.module
 import java.io.File
 
 /**
@@ -15,19 +17,19 @@ import java.io.File
  */
 val cacheModule = module(override = true) {
 
-    single(name = "DiskCache", override = true) { (cacheDirectory: File, mapper: JsonMapper) ->
+    single(qualifier = StringQualifier("DiskCache"), override = true) { (cacheDirectory: File, mapper: JsonMapper) ->
         DiskCache(cacheDirectory, mapper)
     } bind Persistence::class
 
-    single(name = "MemoryCache") {
+    single(qualifier = StringQualifier("MemoryCache")) {
         MemoryCache()
     } bind Memory::class
 
-    factory(name = "RecordExpiredChecker") {
+    factory(qualifier = StringQualifier("RecordExpiredChecker")) {
         RecordExpiredChecker()
     }
 
-    single(name = "ProxyTranslator") {
+    single(qualifier = StringQualifier("ProxyTranslator")) {
         ProxyTranslator()
-    }
+    } bind ProxyTranslator::class
 }
