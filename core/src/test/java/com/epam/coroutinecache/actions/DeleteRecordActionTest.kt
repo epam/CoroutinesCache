@@ -8,7 +8,7 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.koin.core.parameter.parametersOf
-import org.koin.standalone.inject
+import org.koin.test.inject
 import java.lang.reflect.Type
 
 class DeleteRecordActionTest : BaseTest() {

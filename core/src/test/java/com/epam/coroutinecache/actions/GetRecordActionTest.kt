@@ -14,7 +14,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.koin.core.parameter.parametersOf
-import org.koin.standalone.inject
+import org.koin.test.inject
 
 class GetRecordActionTest : BaseTest() {
 
