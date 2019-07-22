@@ -7,9 +7,9 @@ import com.epam.coroutinecache.core.actions.GetRecordAction
 import com.epam.coroutinecache.core.actions.SaveRecordAction
 import com.epam.coroutinecache.utils.CacheLog
 import kotlinx.coroutines.CoroutineScope
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import org.koin.core.parameter.parametersOf
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
 
 class ProcessorProviderImpl(
         private val cacheParams: CacheParams,

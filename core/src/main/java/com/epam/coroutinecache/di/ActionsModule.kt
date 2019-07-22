@@ -6,31 +6,47 @@ import com.epam.coroutinecache.core.actions.DeleteRecordAction
 import com.epam.coroutinecache.core.actions.GetRecordAction
 import com.epam.coroutinecache.core.actions.SaveRecordAction
 import kotlinx.coroutines.CoroutineScope
-import org.koin.dsl.module.module
+import org.koin.core.qualifier.StringQualifier
+import org.koin.dsl.bind
+import org.koin.dsl.module
 
 /**
  * Koin module that contains all actions with cache
  */
 val actionsModule = module(override = true) {
 
-    single(name = "DeleteExpiredRecordAction") {
-        DeleteExpiredRecordsAction(get(name = "DiskCache"), get(name = "MemoryCache"), get(name = "RecordExpiredChecker"))
-    }
+    single(qualifier = StringQualifier("DeleteExpiredRecordAction")) {
+        DeleteExpiredRecordsAction(
+                get(qualifier = StringQualifier("DiskCache")),
+                get(qualifier = StringQualifier("MemoryCache")),
+                get(qualifier = StringQualifier("RecordExpiredChecker")))
+    } bind DeleteExpiredRecordsAction::class
 
-    single(name = "DeleteExpirableRecordsAction") { (maxMgPersistenceCache: Int, scope: CoroutineScope) ->
-        DeleteExpirableRecordsAction(maxMgPersistenceCache, get(name = "DiskCache"), scope)
-    }
+    single(qualifier = StringQualifier("DeleteExpirableRecordsAction")) { (maxMgPersistenceCache: Int, scope: CoroutineScope) ->
+        DeleteExpirableRecordsAction(maxMgPersistenceCache,
+                get(qualifier = StringQualifier("DiskCache")),
+                scope)
+    } bind DeleteExpirableRecordsAction::class
 
-    factory(name = "DeleteRecordAction") { (scope: CoroutineScope) ->
-        DeleteRecordAction(get(name = "DiskCache"), get(name = "MemoryCache"), scope)
-    }
+    factory(qualifier = StringQualifier("DeleteRecordAction")) { (scope: CoroutineScope) ->
+        DeleteRecordAction(
+                get(qualifier = StringQualifier("DiskCache")),
+                get(qualifier = StringQualifier("MemoryCache")), scope)
+    } bind DeleteRecordAction::class
 
-    factory(name = "GetRecordAction") { (scope: CoroutineScope) ->
-        GetRecordAction(get(name = "DeleteExpiredRecordAction"), get(name = "RecordExpiredChecker"),
-                get(name = "DiskCache"), get(name = "MemoryCache"), scope)
-    }
+    factory(qualifier = StringQualifier("GetRecordAction")) { (scope: CoroutineScope) ->
+        GetRecordAction(
+                get(qualifier = StringQualifier("DeleteExpiredRecordAction")),
+                get(qualifier = StringQualifier("RecordExpiredChecker")),
+                get(qualifier = StringQualifier("DiskCache")),
+                get(qualifier = StringQualifier("MemoryCache")), scope)
+    } bind GetRecordAction::class
 
-    factory(name = "SaveAction") { (maxMbCacheSize: Int, scope: CoroutineScope) ->
-        SaveRecordAction(get(name = "DiskCache"), get(name = "MemoryCache"), maxMbCacheSize, scope)
-    }
+    factory(qualifier = StringQualifier("SaveAction")) { (maxMbCacheSize: Int, scope: CoroutineScope) ->
+        SaveRecordAction(
+                get(qualifier = StringQualifier("DiskCache")),
+                get(qualifier = StringQualifier("MemoryCache")),
+                maxMbCacheSize,
+                scope)
+    } bind SaveRecordAction::class
 }

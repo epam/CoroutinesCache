@@ -5,9 +5,9 @@ import com.epam.coroutinecache.core.Persistence
 import com.epam.coroutinecache.core.Record
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import org.koin.core.parameter.parametersOf
-import org.koin.standalone.KoinComponent
-import org.koin.standalone.inject
 import java.lang.reflect.Type
 
 /**

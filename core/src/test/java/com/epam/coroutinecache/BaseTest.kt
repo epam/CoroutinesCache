@@ -10,11 +10,11 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
 import org.koin.core.parameter.parametersOf
-import org.koin.standalone.StandAloneContext.startKoin
-import org.koin.standalone.StandAloneContext.stopKoin
-import org.koin.standalone.get
 import org.koin.test.KoinTest
+import org.koin.test.get
 
 open class BaseTest : KoinTest {
 
@@ -30,7 +30,9 @@ open class BaseTest : KoinTest {
 
     @Before
     fun beforeTest() {
-        startKoin(arrayListOf(cacheModule, actionsModule))
+        startKoin {
+            modules(listOf(actionsModule, cacheModule))
+        }
         memory = get()
         diskCache = get { parametersOf(temporaryFolder.root, mapperProvider.provideMapperByChooser(JsonFactoryChooser.MOSHI)) }
     }
