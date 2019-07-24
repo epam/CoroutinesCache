@@ -1,6 +1,6 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
-project.ext.set("versionName", "0.9.4")
+project.ext.set("versionName", "0.9.5")
 
 apply from: 'ktlint.gradle'
 
