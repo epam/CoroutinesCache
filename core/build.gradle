@@ -32,7 +32,7 @@ dokka {
 publish {
     def groupProjectID = 'com.epam.coroutinecache'
     def artifactProjectID = 'coroutinecache'
-    def publishVersionID = '0.9.4'
+    def publishVersionID = '0.9.5'
 
     userOrg = 'epam-mobile-cc'
     repoName = 'coroutines-cache'
