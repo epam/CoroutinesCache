@@ -1,3 +1,7 @@
+// Code by @IlyaEremin
+//
+// See description at https://medium.com/@IlyaEremin/npm-version-for-gradle-android-9137a7dc273c
+
 def getVersionName = { getVersionProps()['appVersionName'] }
 
 def getAppVersionCode() { getVersionProps()['appVersionCode'].toInteger() }
