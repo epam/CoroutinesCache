@@ -18,17 +18,11 @@ import kotlin.reflect.KCallable
  */
 class ProxyTranslator {
 
-    private val cacheObjectParamsMap: MutableMap<Method, CacheObjectParams> = HashMap()
-
     @Suppress("ReturnCount")
     fun processMethod(method: Method?, methodArgs: Array<out Any>?): CacheObjectParams? {
         if (method == null) {
             return null
         }
-        if (cacheObjectParamsMap[method] != null) {
-            return cacheObjectParamsMap[method]!!
-        }
-
         val cacheObjectParams = CacheObjectParams()
         val lifeTime = getMethodLifeTime(method)
         if (lifeTime != null) {
@@ -41,8 +35,6 @@ class ProxyTranslator {
         val baseKey = getMethodKey(method)
         cacheObjectParams.key = cacheObjectParams.dataProvider?.parameterizeKey(baseKey) ?: baseKey
         cacheObjectParams.entryType = getMethodType(method)
-
-        cacheObjectParamsMap[method] = cacheObjectParams
 
         return cacheObjectParams
     }
