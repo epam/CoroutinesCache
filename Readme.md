@@ -163,3 +163,18 @@ class MainActivity : AppCompatActivity() {
 ````
 
 To see full example, check app module in this repository. 
+
+## ProGuard
+Do not forget to keep your own data classes in proguard rules. For example, add this line for 'Data' class that is being cached with this library:
+```
+# Keep all of your data classes that are stored in CoroutineCache
+-keep class com.epam.example.coroutinescache.Data { *; }
+```
+
+Also, please add following instructions so that CoroutineCache may work properly:
+```
+# ProGuard instructions that are required for CoroutineCache to work properly
+-keepclassmembers enum com.epam.coroutinecache.core.Source {
+    public *;
+}
+```
