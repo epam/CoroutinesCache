@@ -14,9 +14,26 @@ android {
         versionName project.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
+    signingConfigs {
+        releaseConfig {
+            storeFile file('appTest.jks')
+            storePassword 'apptest'
+            keyAlias = 'apptest'
+            keyPassword 'apptest'
+        }
+    }
+
     buildTypes {
-        release {
+        debug {
             minifyEnabled false
+            debuggable true
+        }
+
+        release {
+            debuggable false
+            minifyEnabled true
+            signingConfig signingConfigs.releaseConfig
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
