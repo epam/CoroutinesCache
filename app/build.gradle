@@ -10,8 +10,8 @@ android {
         applicationId "com.epam.example.coroutinescache"
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 1
-        versionName project.versionName
+        versionCode appVersionCode.toInteger()
+        versionName appVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
