@@ -1,5 +1,7 @@
 # CoroutinesCache
 
+[![Build Status](https://img.shields.io/travis/epam/CoroutinesCache/master.svg?label=master)](https://travis-ci.org/epam/CoroutinesCache)
+
 ## Preview
 The goal of this library is simple: caching your data models like **Picasso** caches your images, with no effort at all.
 
